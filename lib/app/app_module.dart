@@ -1,13 +1,17 @@
-import 'package:flutter/material.dart';
+import 'package:erp/app/screens/login/login_page.dart';
+import 'package:erp/app/services/auth_service.dart';
+import 'package:erp/app/services/authenticated_http_client.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AppModule extends Module {
   @override
-  final List<Bind> binds = [];
+  final List<Bind> binds = [
+    Bind((i) => AuthenticatedHttpClient()),
+    Bind((i) => AuthService(i.get()))
+  ];
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute(Modular.initialRoute,
-        child: (_, args) => Container(color: Colors.redAccent)),
+    ChildRoute(Modular.initialRoute, child: (_, args) => LoginPage()),
   ];
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:erp/app/models/user.dart';
 import 'package:erp/app/services/authenticated_http_client.dart';
 import 'package:erp/app/shared/config.dart';
 import 'package:erp/app/shared/http_response.dart';
@@ -96,5 +97,33 @@ class AuthService {
             'Não foi possível realizar o cadastro! Tente novamente mais tarde.',
       );
     }
+  }
+
+  Future<User?> me() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+      if (token == null || token.isEmpty) {
+        return null;
+      } else {
+        http.setToken(token);
+      }
+      var response = await http.get(Uri.parse('${Config.baseUrl}/me'));
+
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+        return User.fromMap(responseBody['tenant']);
+      }
+      return null;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<void> logout() async {
+    http.setToken('');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
   }
 }

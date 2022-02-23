@@ -1,3 +1,4 @@
+import 'package:erp/app/screens/home/home_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
 import 'package:erp/app/shared/http_response.dart';
 import 'package:erp/app/shared/styled_form_field.dart';
@@ -38,9 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
       );
 
       if (response.success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar(message: response.message),
-        );
+        Modular.to.popAndPushNamed(HomePage.routeName);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(message: response.message, isError: true),
@@ -52,134 +51,132 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CustomColors.secondary,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Flexible(
-              flex: 1,
-              child: Center(
-                child: Text(
-                  'ERP',
-                  style: TextStyles.T1
-                      .textColor(CustomColors.primary)
-                      .size(FontSizes.s36),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: CustomColors.secondary,
+        body: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                flex: 1,
+                child: Center(
+                  child: Text(
+                    'ERP',
+                    style: TextStyles.T1
+                        .textColor(CustomColors.primary)
+                        .size(FontSizes.s36),
+                  ),
                 ),
               ),
-            ),
-            Flexible(
-              flex: 2,
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    StyledFormField(
-                      textEditingController: nameController,
-                      labelText: 'Nome',
-                      hintText: 'Pedro Almeida',
-                      validator: (name) {
-                        if (name == null || name.length < 3) {
-                          return 'Nome deve ter no mínimo 3 caracteres';
-                        }
-                        return null;
-                      },
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                    SizedBox(height: 10),
-                    StyledFormField(
-                      textEditingController: emailController,
-                      labelText: 'Email',
-                      hintText: 'fulano@email.com',
-                      validator: (email) {
-                        if (!RegExp(r'.+\@.+\..+').hasMatch(email ?? '')) {
-                          return 'Email inválido';
-                        }
-                        return null;
-                      },
-                      prefixIcon: Icon(Icons.email),
-                    ),
-                    SizedBox(height: 10),
-                    StyledFormField(
-                      textEditingController: passwordController,
-                      labelText: 'Senha',
-                      hintText: '***',
-                      validator: (password) {
-                        if (password == null || password.length < 3) {
-                          return 'Senha deve ter no mínimo 3 caracteres';
-                        }
-                        return null;
-                      },
-                      obscureText: true,
-                      prefixIcon: Icon(Icons.lock),
-                    ),
-                    SizedBox(height: 10),
-                    StyledFormField(
-                      textEditingController: repeatPasswordController,
-                      labelText: 'Repita a senha',
-                      hintText: '***',
-                      obscureText: true,
-                      prefixIcon: Icon(Icons.lock),
-                      validator: (password) {
-                        if (password != passwordController.text) {
-                          return 'Senhas não coincidem';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 40),
-                    loading
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : GestureDetector(
-                            onTap: register,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: CustomColors.primary,
-                                borderRadius: Corners.s10Border,
+              Flexible(
+                flex: 2,
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      StyledFormField(
+                        textEditingController: nameController,
+                        labelText: 'Nome',
+                        hintText: 'Pedro Almeida',
+                        validator: (name) {
+                          if (name == null || name.length < 3) {
+                            return 'Nome deve ter no mínimo 3 caracteres';
+                          }
+                          return null;
+                        },
+                        prefixIcon: Icon(Icons.person),
+                      ),
+                      SizedBox(height: 10),
+                      StyledFormField(
+                        textEditingController: emailController,
+                        labelText: 'Email',
+                        hintText: 'fulano@email.com',
+                        validator: (email) {
+                          if (!RegExp(r'.+\@.+\..+').hasMatch(email ?? '')) {
+                            return 'Email inválido';
+                          }
+                          return null;
+                        },
+                        prefixIcon: Icon(Icons.email),
+                      ),
+                      SizedBox(height: 10),
+                      StyledFormField(
+                        textEditingController: passwordController,
+                        labelText: 'Senha',
+                        hintText: '***',
+                        validator: (password) {
+                          if (password == null || password.length < 3) {
+                            return 'Senha deve ter no mínimo 3 caracteres';
+                          }
+                          return null;
+                        },
+                        obscureText: true,
+                        prefixIcon: Icon(Icons.lock),
+                      ),
+                      SizedBox(height: 10),
+                      StyledFormField(
+                        textEditingController: repeatPasswordController,
+                        labelText: 'Repita a senha',
+                        hintText: '***',
+                        obscureText: true,
+                        prefixIcon: Icon(Icons.lock),
+                        validator: (password) {
+                          if (password != passwordController.text) {
+                            return 'Senhas não coincidem';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 40),
+                      loading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : GestureDetector(
+                              onTap: register,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: CustomColors.primary,
+                                  borderRadius: Corners.s10Border,
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Center(
+                                    child: Text(
+                                  'CADASTRAR',
+                                  style: TextStyles.T1
+                                      .textColor(CustomColors.white),
+                                )),
                               ),
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Center(
-                                  child: Text(
-                                'CADASTRAR',
-                                style:
-                                    TextStyles.T1.textColor(CustomColors.white),
-                              )),
                             ),
-                          ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Flexible(
-              flex: 1,
-              child: InkWell(
-                onTap: () => Modular.to.popAndPushNamed(LoginPage.routeName),
-                child: Column(
-                  children: [
-                    Text(
-                      'já é cadastrado?',
-                      style: TextStyle(
-                        fontSize: 12,
+              Flexible(
+                flex: 1,
+                child: InkWell(
+                  onTap: () => Modular.to.popAndPushNamed(LoginPage.routeName),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'já é cadastrado?',
+                        style: TextStyles.H2,
                       ),
-                    ),
-                    Text(
-                      'Entrar',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: CustomColors.primary,
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        'Entrar',
+                        style: TextStyles.H1.textColor(CustomColors.primary),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

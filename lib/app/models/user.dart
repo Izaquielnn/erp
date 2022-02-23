@@ -27,7 +27,8 @@ class DadosGerais {
   });
 
   DadosGerais.fromMap(Map map)
-      : categoriasContasPagar = map['categoriasContasPagar'],
-        categoriasContasReceber = map['categoriasContasReceber'],
-        formasPagamento = map['formasPagamento'];
+      : categoriasContasPagar = List<String>.from(map['categoriasContasPagar']),
+        categoriasContasReceber =
+            List<String>.from(map['categoriasContasReceber']),
+        formasPagamento = List<String>.from(map['formasPagamento']);
 }

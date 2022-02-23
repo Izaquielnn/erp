@@ -1,4 +1,4 @@
-import 'package:erp/app/screens/register/register_page.dart';
+import 'package:erp/app/screens/login/login_page.dart';
 import 'package:erp/app/shared/http_response.dart';
 import 'package:erp/app/shared/styled_form_field.dart';
 import 'package:erp/app/services/auth_service.dart';
@@ -8,42 +8,45 @@ import 'package:erp/app/shared/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
-  static const String routeName = '/';
-
+  static const String routeName = '/register';
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController repeatPasswordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
   AuthService authService = Modular.get();
 
   bool loading = false;
 
-  void login() async {
+  void register() async {
     setState(() => loading = true);
-    HttpResponse response = await authService.login(
-      email: emailController.text,
-      password: passwordController.text,
-    );
+    if (formKey.currentState!.validate()) {
+      HttpResponse response = await authService.register(
+        name: nameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+      );
 
-    if (response.success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(message: 'Salvando token e navegando para homepage'),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(message: 'Email ou senha inválidos!', isError: true),
-      );
+      if (response.success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar(message: response.message),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar(message: response.message, isError: true),
+        );
+      }
     }
-
     setState(() => loading = false);
   }
 
@@ -69,15 +72,34 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Flexible(
-              flex: 1,
+              flex: 2,
               child: Form(
                 key: formKey,
                 child: Column(
                   children: [
                     StyledFormField(
+                      textEditingController: nameController,
+                      labelText: 'Nome',
+                      hintText: 'Pedro Almeida',
+                      validator: (name) {
+                        if (name == null || name.length < 3) {
+                          return 'Nome deve ter no mínimo 3 caracteres';
+                        }
+                        return null;
+                      },
+                      prefixIcon: Icon(Icons.person),
+                    ),
+                    SizedBox(height: 10),
+                    StyledFormField(
                       textEditingController: emailController,
                       labelText: 'Email',
                       hintText: 'fulano@email.com',
+                      validator: (email) {
+                        if (!RegExp(r'.+\@.+\..+').hasMatch(email ?? '')) {
+                          return 'Email inválido';
+                        }
+                        return null;
+                      },
                       prefixIcon: Icon(Icons.email),
                     ),
                     SizedBox(height: 10),
@@ -85,8 +107,28 @@ class _LoginPageState extends State<LoginPage> {
                       textEditingController: passwordController,
                       labelText: 'Senha',
                       hintText: '***',
+                      validator: (password) {
+                        if (password == null || password.length < 3) {
+                          return 'Senha deve ter no mínimo 3 caracteres';
+                        }
+                        return null;
+                      },
                       obscureText: true,
                       prefixIcon: Icon(Icons.lock),
+                    ),
+                    SizedBox(height: 10),
+                    StyledFormField(
+                      textEditingController: repeatPasswordController,
+                      labelText: 'Repita a senha',
+                      hintText: '***',
+                      obscureText: true,
+                      prefixIcon: Icon(Icons.lock),
+                      validator: (password) {
+                        if (password != passwordController.text) {
+                          return 'Senhas não coincidem';
+                        }
+                        return null;
+                      },
                     ),
                     SizedBox(height: 40),
                     loading
@@ -94,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: CircularProgressIndicator(),
                           )
                         : GestureDetector(
-                            onTap: login,
+                            onTap: register,
                             child: Container(
                               decoration: BoxDecoration(
                                 color: CustomColors.primary,
@@ -102,12 +144,11 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               padding: EdgeInsets.symmetric(vertical: 10),
                               child: Center(
-                                child: Text(
-                                  'ENTRAR',
-                                  style: TextStyles.T1
-                                      .textColor(CustomColors.white),
-                                ),
-                              ),
+                                  child: Text(
+                                'CADASTRAR',
+                                style:
+                                    TextStyles.T1.textColor(CustomColors.white),
+                              )),
                             ),
                           ),
                   ],
@@ -117,17 +158,17 @@ class _LoginPageState extends State<LoginPage> {
             Flexible(
               flex: 1,
               child: InkWell(
-                onTap: () => Modular.to.popAndPushNamed(RegisterPage.routeName),
+                onTap: () => Modular.to.popAndPushNamed(LoginPage.routeName),
                 child: Column(
                   children: [
                     Text(
-                      'Ainda não possui conta?',
+                      'já é cadastrado?',
                       style: TextStyle(
                         fontSize: 12,
                       ),
                     ),
                     Text(
-                      'Cadastrar',
+                      'Entrar',
                       style: TextStyle(
                         fontSize: 14,
                         color: CustomColors.primary,

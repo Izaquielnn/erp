@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     authService.me().then((user) {
       if (user != null) {
-        Modular.to.popAndPushNamed(ContatosPage.routeName);
+        Modular.to.popAndPushNamed(HomePage.routeName);
       } else {
         Modular.to.popAndPushNamed(LoginPage.routeName);
       }

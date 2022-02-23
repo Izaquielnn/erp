@@ -10,6 +10,8 @@ class StyledIcons {
   static AssetImage get user => AssetImage('assets/icons/user.png');
   static AssetImage get industry => AssetImage('assets/icons/industry.png');
   static AssetImage get phone => AssetImage('assets/icons/phone.png');
+  static AssetImage get robotConfuse =>
+      AssetImage('assets/icons/robot_confuse.png');
   static Image whats(double size) => Image(
         image: AssetImage('assets/icons/whats.png'),
         width: size,

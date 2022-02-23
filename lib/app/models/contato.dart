@@ -28,7 +28,7 @@ class Contato {
         cpf = map['cpf'],
         empresa = Empresa.fromMap(map['empresa']),
         endereco = Endereco.fromMap(map['endereco']),
-        contatos = map['contatos'],
+        contatos = List<String>.from(map['contatos']),
         avatar = map['avatar'];
 }
 

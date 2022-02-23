@@ -5,13 +5,15 @@ import 'package:erp/app/screens/register/register_page.dart';
 import 'package:erp/app/screens/splash/splash_page.dart';
 import 'package:erp/app/services/auth_service.dart';
 import 'package:erp/app/services/authenticated_http_client.dart';
+import 'package:erp/app/services/contato_service.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AppModule extends Module {
   @override
   final List<Bind> binds = [
     Bind((i) => AuthenticatedHttpClient()),
-    Bind((i) => AuthService(i.get()))
+    Bind((i) => AuthService(i.get())),
+    Bind((i) => ContatoService(i.get())),
   ];
 
   @override

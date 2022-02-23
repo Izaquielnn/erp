@@ -1,3 +1,4 @@
+import 'package:erp/app/screens/contatos/contatos_page.dart';
 import 'package:erp/app/screens/home/home_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
 import 'package:erp/app/services/auth_service.dart';
@@ -19,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     authService.me().then((user) {
       if (user != null) {
-        Modular.to.popAndPushNamed(HomePage.routeName);
+        Modular.to.popAndPushNamed(ContatosPage.routeName);
       } else {
         Modular.to.popAndPushNamed(LoginPage.routeName);
       }

@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Flexible(
-                flex: 1,
+                flex: 2,
                 child: Form(
                   key: formKey,
                   child: Column(

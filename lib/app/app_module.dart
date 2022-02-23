@@ -1,3 +1,4 @@
+import 'package:erp/app/screens/contatos/contatos_page.dart';
 import 'package:erp/app/screens/home/home_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
 import 'package:erp/app/screens/register/register_page.dart';
@@ -17,6 +18,7 @@ class AppModule extends Module {
   final List<ModularRoute> routes = [
     ChildRoute(Modular.initialRoute, child: (_, args) => SplashPage()),
     ChildRoute(HomePage.routeName, child: (_, args) => HomePage()),
+    ChildRoute(ContatosPage.routeName, child: (_, args) => ContatosPage()),
     ChildRoute(LoginPage.routeName, child: (_, args) => LoginPage()),
     ChildRoute(RegisterPage.routeName, child: (_, args) => RegisterPage()),
   ];

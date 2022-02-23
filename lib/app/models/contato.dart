@@ -5,9 +5,21 @@ class Contato {
   String? cpf;
   Empresa empresa;
 
-  Endereco? endereco;
+  Endereco endereco;
   List<String> contatos;
   String? avatar;
+
+  Contato({
+    required this.nome,
+    this.email,
+    this.cnpj,
+    this.cpf,
+    Empresa? empresa,
+    Endereco? endereco,
+    this.contatos = const [],
+    this.avatar,
+  })  : empresa = empresa ?? Empresa(),
+        endereco = endereco ?? Endereco();
 
   Contato.fromMap(Map map)
       : nome = map['nome'],
@@ -58,4 +70,17 @@ class Endereco {
         numero = map['numero'],
         uf = map['uf'],
         complemento = map['complemento'];
+
+  @override
+  String toString() {
+    String address = logradouro ?? '';
+    address = numero != null ? '$address, $numero' : address;
+    address = bairro != null ? '$address - $bairro' : address;
+    address = cidade != null ? '$address, $cidade' : address;
+    address = uf != null ? '$address - $uf' : address;
+    address = cep != null ? '$address, $cep' : address;
+    address = complemento != null ? '$address, $complemento' : address;
+
+    return address.isEmpty ? '-' : address;
+  }
 }

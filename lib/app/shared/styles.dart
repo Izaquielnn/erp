@@ -175,5 +175,7 @@ class Corners {
 
   static BorderRadius get s10Border => BorderRadius.all(s10Radius);
 
+  static BorderRadius get sCircularBorder => BorderRadius.circular(1000);
+
   static Radius get s10Radius => Radius.circular(s10);
 }

@@ -38,6 +38,7 @@ dependencies:
   textstyle_extensions: 2.0.0-nullsafety
   shared_preferences: ^2.0.13
   http: ^0.13.4
+  mask_text_input_formatter: ^2.1.0
 
 dev_dependencies:
   flutter_test:

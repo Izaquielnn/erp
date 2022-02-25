@@ -1,5 +1,6 @@
 import 'package:erp/app/models/contato.dart';
 import 'package:erp/app/screens/contatos/contato_widget.dart';
+import 'package:erp/app/screens/edit_contato/edit_contato_page.dart';
 import 'package:erp/app/services/contato_service.dart';
 import 'package:erp/app/shared/custom_colors.dart';
 import 'package:erp/app/shared/custom_snack_bar.dart';
@@ -81,7 +82,9 @@ class _ContatosPageState extends State<ContatosPage> {
     return Scaffold(
       backgroundColor: CustomColors.secondary,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Modular.to.pushNamed(EditContatoPage.routeName);
+        },
         backgroundColor: CustomColors.primary,
         child: Icon(
           Icons.add,
@@ -109,9 +112,7 @@ class _ContatosPageState extends State<ContatosPage> {
                   Expanded(
                     child: Text(
                       'Contatos',
-                      style: TextStyles.T1
-                          .textColor(CustomColors.primary)
-                          .size(24),
+                      style: TextStyles.T1.textColor(CustomColors.primary),
                     ),
                   ),
                   ImageIcon(

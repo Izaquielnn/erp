@@ -21,15 +21,26 @@ class Contato {
   })  : empresa = empresa ?? Empresa(),
         endereco = endereco ?? Endereco();
 
-  Contato.fromMap(Map map)
+  Contato.fromJson(Map map)
       : nome = map['nome'],
         email = map['email'],
         cnpj = map['cnpj'],
         cpf = map['cpf'],
-        empresa = Empresa.fromMap(map['empresa']),
-        endereco = Endereco.fromMap(map['endereco']),
+        empresa = Empresa.fromJson(map['empresa']),
+        endereco = Endereco.fromJson(map['endereco']),
         contatos = List<String>.from(map['contatos']),
         avatar = map['avatar'];
+
+  Map<String, dynamic> toJson() => {
+        'nome': nome,
+        'email': email,
+        'cpf': cpf,
+        'cnpj': cnpj,
+        'empresa': empresa.toJson(),
+        'endereco': endereco.toJson(),
+        'contatos': contatos,
+        'email': email,
+      };
 }
 
 class Empresa {
@@ -38,9 +49,14 @@ class Empresa {
 
   Empresa({this.razaoSozial, this.inscEstadual});
 
-  Empresa.fromMap(Map map)
+  Empresa.fromJson(Map map)
       : razaoSozial = map['razaoSozial'],
         inscEstadual = map['inscEstadual'];
+
+  Map<String, dynamic> toJson() => {
+        'razaoSozial': razaoSozial,
+        'inscEstadual': inscEstadual,
+      };
 }
 
 class Endereco {
@@ -62,7 +78,7 @@ class Endereco {
     this.uf,
   });
 
-  Endereco.fromMap(Map map)
+  Endereco.fromJson(Map map)
       : cep = map['cep'],
         bairro = map['bairro'],
         cidade = map['cidade'],
@@ -70,6 +86,16 @@ class Endereco {
         numero = map['numero'],
         uf = map['uf'],
         complemento = map['complemento'];
+
+  Map<String, dynamic> toJson() => {
+        'cep': cep,
+        'bairro': bairro,
+        'cidade': cidade,
+        'logradouro': logradouro,
+        'numero': numero,
+        'uf': uf,
+        'complemento': complemento,
+      };
 
   @override
   String toString() {

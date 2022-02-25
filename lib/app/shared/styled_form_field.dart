@@ -12,10 +12,12 @@ class StyledFormField extends StatelessWidget {
     required this.labelText,
     this.obscureText = false,
     this.prefixIcon,
+    this.suffixIcon,
     this.fillColor,
     this.borderRadius,
     this.masks,
     this.autorrect = true,
+    this.realtimeValidation = false,
   }) : super(key: key);
 
   final TextEditingController textEditingController;
@@ -24,36 +26,43 @@ class StyledFormField extends StatelessWidget {
   final String? labelText;
   final bool obscureText;
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final Color? fillColor;
   final BorderRadius? borderRadius;
   final List<TextInputFormatter>? masks;
   final bool autorrect;
+  final bool realtimeValidation;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       obscureText: obscureText,
       controller: textEditingController,
-      validator: validator ?? defaultValidator,
+      validator: validator,
       style: TextStyles.H1,
       inputFormatters: masks,
       autocorrect: autorrect,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      autovalidateMode: realtimeValidation
+          ? AutovalidateMode.onUserInteraction
+          : AutovalidateMode.disabled,
       decoration: InputDecoration(
         border: UnderlineInputBorder(
           borderRadius: borderRadius ?? Corners.s10Border,
           borderSide: BorderSide.none,
         ),
-        // errorBorder: OutlineInputBorder(
-        //   borderRadius: Corners.s10Border,
-        //   borderSide: BorderSide(color: CustomColors.error),
-        // ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: Corners.s10Border,
+          borderSide:
+              BorderSide(color: CustomColors.error.withOpacity(.3), width: .5),
+        ),
         errorStyle: TextStyles.Body3.textColor(CustomColors.error),
         hintText: hintText,
+        hintStyle: TextStyles.H1.textColor(CustomColors.black3),
         filled: true,
         labelText: labelText,
         fillColor: fillColor ?? CustomColors.white,
         prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
       ),
     );
   }

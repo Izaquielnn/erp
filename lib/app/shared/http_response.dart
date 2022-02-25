@@ -1,6 +1,8 @@
-class HttpResponse {
+class HttpResponse<T> {
   bool success;
   String message;
 
-  HttpResponse({required this.success, required this.message});
+  T? value;
+
+  HttpResponse({required this.success, required this.message, this.value});
 }

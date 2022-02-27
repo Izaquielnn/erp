@@ -25,6 +25,6 @@ class AppModule extends Module {
     ChildRoute(RegisterPage.routeName, child: (_, args) => RegisterPage()),
     ChildRoute(ContatosPage.routeName, child: (_, args) => ContatosPage()),
     ChildRoute(EditContatoPage.routeName,
-        child: (_, args) => EditContatoPage()),
+        child: (_, args) => EditContatoPage(contato: args.data)),
   ];
 }

@@ -55,6 +55,7 @@ class StyledFormField extends StatelessWidget {
           borderSide:
               BorderSide(color: CustomColors.error.withOpacity(.3), width: .5),
         ),
+        hoverColor: (fillColor ?? CustomColors.white).darken(),
         errorStyle: TextStyles.Body3.textColor(CustomColors.error),
         hintText: hintText,
         hintStyle: TextStyles.H1.textColor(CustomColors.black3),

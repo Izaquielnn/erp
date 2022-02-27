@@ -1,4 +1,5 @@
 class Contato {
+  String? id;
   String nome;
   String? email;
   String? cnpj;
@@ -10,6 +11,7 @@ class Contato {
   String? avatar;
 
   Contato({
+    this.id,
     required this.nome,
     this.email,
     this.cnpj,
@@ -22,7 +24,8 @@ class Contato {
         endereco = endereco ?? Endereco();
 
   Contato.fromJson(Map map)
-      : nome = map['nome'],
+      : id = map['_id'],
+        nome = map['nome'],
         email = map['email'],
         cnpj = map['cnpj'],
         cpf = map['cpf'],

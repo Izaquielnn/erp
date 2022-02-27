@@ -3,6 +3,7 @@ import 'package:erp/app/models/contato.dart';
 import 'package:erp/app/services/authenticated_http_client.dart';
 import 'package:erp/app/shared/config.dart';
 import 'package:erp/app/shared/http_response.dart';
+import 'package:http/http.dart';
 
 class ContatoService {
   AuthenticatedHttpClient http;
@@ -58,6 +59,42 @@ class ContatoService {
           success: false,
           message:
               'Não foi possível realizar o cadastro! Tente novamente mais tarde.');
+    }
+  }
+
+  Future<HttpResponse<Contato>> updateContato(Contato contato) async {
+    try {
+      Uri uri = Uri.parse('${Config.baseUrl}/contato');
+      Response response;
+      String body = jsonEncode(contato);
+      Map<String, String> headers = {
+        'Content-Type': 'application/json; charset=UTF-8'
+      };
+
+      uri = Uri.parse('${Config.baseUrl}/contato/${contato.id}');
+      response = await http.put(uri, body: body, headers: headers);
+
+      print(response.body);
+
+      if (response.statusCode == 202) {
+        var responseBody = jsonDecode(response.body);
+        Contato contato = Contato.fromJson(responseBody['contato']);
+        return HttpResponse(
+            success: true,
+            message: 'Contato atualizado com sucesso!',
+            value: contato);
+      }
+
+      String message =
+          'Não foi possível realizar a atualização! Tente novamente mais tarde.';
+
+      return HttpResponse(success: false, message: message);
+    } catch (e) {
+      print(e);
+      return HttpResponse(
+          success: false,
+          message:
+              'Não foi possível realizar a atualização! Tente novamente mais tarde.');
     }
   }
 }

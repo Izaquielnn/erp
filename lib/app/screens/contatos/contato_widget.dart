@@ -1,8 +1,10 @@
 import 'package:erp/app/models/contato.dart';
+import 'package:erp/app/screens/edit_contato/edit_contato_page.dart';
 import 'package:erp/app/shared/custom_colors.dart';
 import 'package:erp/app/shared/styled_icons.dart';
 import 'package:erp/app/shared/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class ContatoWidget extends StatefulWidget {
   const ContatoWidget({Key? key, required this.contato}) : super(key: key);
@@ -33,26 +35,32 @@ class _ContatoWidgetState extends State<ContatoWidget> {
           children: [
             ...fieldsToShow(contato),
             SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: Corners.sCircularBorder,
-                color: CustomColors.secondary,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ImageIcon(
-                    StyledIcons.edit,
-                    color: CustomColors.primary,
-                    size: 18,
-                  ),
-                  SizedBox(width: 5),
-                  Text(
-                    'Editar contato',
-                    style: TextStyles.H1.textColor(CustomColors.primary),
-                  )
-                ],
+            GestureDetector(
+              onTap: () {
+                Modular.to
+                    .pushNamed(EditContatoPage.routeName, arguments: contato);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: Corners.sCircularBorder,
+                  color: CustomColors.secondary,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ImageIcon(
+                      StyledIcons.edit,
+                      color: CustomColors.primary,
+                      size: 18,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'Editar contato',
+                      style: TextStyles.H1.textColor(CustomColors.primary),
+                    )
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 10),

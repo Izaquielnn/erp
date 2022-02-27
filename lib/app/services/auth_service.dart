@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:erp/app/models/user.dart';
-import 'package:erp/app/services/authenticated_http_client.dart';
+import 'package:erp/app/shared/authenticated_http_client.dart';
 import 'package:erp/app/shared/config.dart';
 import 'package:erp/app/shared/http_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';

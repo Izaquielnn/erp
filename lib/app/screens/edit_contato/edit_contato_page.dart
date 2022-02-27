@@ -1,4 +1,7 @@
 import 'package:erp/app/models/contato.dart';
+import 'package:erp/app/models/empresa.dart';
+import 'package:erp/app/models/endereco.dart';
+import 'package:erp/app/services/cep_service.dart';
 import 'package:erp/app/shared/masks.dart';
 import 'package:erp/app/services/contato_service.dart';
 import 'package:erp/app/shared/custom_button.dart';
@@ -78,6 +81,23 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
     }
   }
 
+  bool loadingCep = false;
+
+  void cepListener() async {
+    String cep = cepMask.getUnmaskedText();
+    if (cep.length == 8) {
+      setState(() => loadingCep = true);
+      Endereco? endereco = await CepService.search(cep);
+      if (endereco != null) {
+        cidadeController.text = endereco.cidade ?? '';
+        logradouroController.text = endereco.logradouro ?? '';
+        bairroController.text = endereco.bairro ?? '';
+        ufController.text = endereco.uf ?? '';
+      }
+      setState(() => loadingCep = false);
+    }
+  }
+
   @override
   initState() {
     if (widget.contato != null) {
@@ -114,6 +134,7 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
     }
     if (contatosControllers.isEmpty) addContatoInput();
     cpfCnpjController.addListener(cpfCnpjListener);
+    cepController.addListener(cepListener);
     super.initState();
   }
 

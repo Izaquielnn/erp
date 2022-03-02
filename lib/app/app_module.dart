@@ -5,8 +5,9 @@ import 'package:erp/app/screens/login/login_page.dart';
 import 'package:erp/app/screens/register/register_page.dart';
 import 'package:erp/app/screens/splash/splash_page.dart';
 import 'package:erp/app/services/auth_service.dart';
-import 'package:erp/app/services/authenticated_http_client.dart';
+import 'package:erp/app/shared/authenticated_http_client.dart';
 import 'package:erp/app/services/contato_service.dart';
+import 'package:erp/app/stores/contato_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AppModule extends Module {
@@ -15,6 +16,7 @@ class AppModule extends Module {
     Bind((i) => AuthenticatedHttpClient()),
     Bind((i) => AuthService(i.get())),
     Bind((i) => ContatoService(i.get())),
+    Bind((i) => ContatoStore(i.get())),
   ];
 
   @override

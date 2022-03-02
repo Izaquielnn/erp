@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:erp/app/models/contato.dart';
-import 'package:erp/app/services/authenticated_http_client.dart';
+import 'package:erp/app/shared/authenticated_http_client.dart';
 import 'package:erp/app/shared/config.dart';
 import 'package:erp/app/shared/http_response.dart';
 import 'package:http/http.dart';
@@ -73,8 +73,6 @@ class ContatoService {
 
       uri = Uri.parse('${Config.baseUrl}/contato/${contato.id}');
       response = await http.put(uri, body: body, headers: headers);
-
-      print(response.body);
 
       if (response.statusCode == 202) {
         var responseBody = jsonDecode(response.body);

@@ -11,6 +11,7 @@ import 'package:erp/app/shared/http_response.dart';
 import 'package:erp/app/shared/styled_form_field.dart';
 import 'package:erp/app/shared/styled_icons.dart';
 import 'package:erp/app/shared/styles.dart';
+import 'package:erp/app/stores/contato_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -28,6 +29,7 @@ class EditContatoPage extends StatefulWidget {
 
 class _EditContatoPagePageState extends State<EditContatoPage> {
   ContatoService contatoService = Modular.get();
+  ContatoStore contatoStore = Modular.get();
   final formKey = GlobalKey<FormState>();
   TextEditingController nomeController = TextEditingController();
   Map<TextEditingController, MaskTextInputFormatter> contatosControllers = {};
@@ -173,6 +175,10 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
         response = await contatoService.updateContato(contato);
       } else {
         response = await contatoService.addContato(contato);
+      }
+
+      if (response.success) {
+        contatoStore.fetchContatos();
       }
 
       ScaffoldMessenger.of(context).showSnackBar(

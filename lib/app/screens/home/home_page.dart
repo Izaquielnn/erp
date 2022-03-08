@@ -1,4 +1,5 @@
 import 'package:erp/app/screens/contatos/contatos_page.dart';
+import 'package:erp/app/screens/financas/financas_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
 import 'package:erp/app/screens/produtos/produtos_page.dart';
 import 'package:erp/app/services/auth_service.dart';
@@ -49,6 +50,13 @@ class _HomePageState extends State<HomePage> {
                 Modular.to.pushNamed(ProdutosPage.routeName);
               },
               child: Text('Produtos'),
+            ),
+            SizedBox(height: 30),
+            TextButton(
+              onPressed: () {
+                Modular.to.pushNamed(FinancasPage.routeName);
+              },
+              child: Text('Finanças'),
             ),
           ],
         ),

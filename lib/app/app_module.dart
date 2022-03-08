@@ -1,5 +1,6 @@
 import 'package:erp/app/screens/contatos/contatos_page.dart';
 import 'package:erp/app/screens/contatos/edit_contato/edit_contato_page.dart';
+import 'package:erp/app/screens/financas/financas_page.dart';
 import 'package:erp/app/screens/home/home_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
 import 'package:erp/app/screens/produtos/edit_produto/edit_produto.dart';
@@ -7,10 +8,12 @@ import 'package:erp/app/screens/produtos/produtos_page.dart';
 import 'package:erp/app/screens/register/register_page.dart';
 import 'package:erp/app/screens/splash/splash_page.dart';
 import 'package:erp/app/services/auth_service.dart';
+import 'package:erp/app/services/financas_service.dart';
 import 'package:erp/app/services/produto_service.dart';
 import 'package:erp/app/shared/authenticated_http_client.dart';
 import 'package:erp/app/services/contato_service.dart';
 import 'package:erp/app/stores/contato_store.dart';
+import 'package:erp/app/stores/lancamento_store.dart';
 import 'package:erp/app/stores/produto_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -21,8 +24,10 @@ class AppModule extends Module {
     Bind((i) => AuthService(i.get())),
     Bind((i) => ContatoService(i.get())),
     Bind((i) => ProdutoService(i.get())),
+    Bind((i) => FinancasService(i.get())),
     Bind((i) => ContatoStore(i.get())),
-    Bind((i) => ProdutoStore(i.get()))
+    Bind((i) => ProdutoStore(i.get())),
+    Bind((i) => LancamentoStore(i.get()))
   ];
 
   @override
@@ -37,5 +42,6 @@ class AppModule extends Module {
     ChildRoute(ProdutosPage.routeName, child: (_, args) => ProdutosPage()),
     ChildRoute(EditProdutoPage.routeName,
         child: (_, args) => EditProdutoPage(produto: args.data)),
+    ChildRoute(FinancasPage.routeName, child: (_, args) => FinancasPage()),
   ];
 }

@@ -1,5 +1,6 @@
 import 'package:erp/app/screens/contatos/contatos_page.dart';
 import 'package:erp/app/screens/contatos/edit_contato/edit_contato_page.dart';
+import 'package:erp/app/screens/financas/edit_lancamento/edit_lancamento_page.dart';
 import 'package:erp/app/screens/financas/financas_page.dart';
 import 'package:erp/app/screens/home/home_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
@@ -10,7 +11,7 @@ import 'package:erp/app/screens/splash/splash_page.dart';
 import 'package:erp/app/services/auth_service.dart';
 import 'package:erp/app/services/financas_service.dart';
 import 'package:erp/app/services/produto_service.dart';
-import 'package:erp/app/shared/authenticated_http_client.dart';
+import 'package:erp/app/shared/utils/authenticated_http_client.dart';
 import 'package:erp/app/services/contato_service.dart';
 import 'package:erp/app/stores/contato_store.dart';
 import 'package:erp/app/stores/lancamento_store.dart';
@@ -43,5 +44,7 @@ class AppModule extends Module {
     ChildRoute(EditProdutoPage.routeName,
         child: (_, args) => EditProdutoPage(produto: args.data)),
     ChildRoute(FinancasPage.routeName, child: (_, args) => FinancasPage()),
+    ChildRoute(EditLancamentoPage.routeName,
+        child: (_, args) => EditLancamentoPage(lancamento: args.data)),
   ];
 }

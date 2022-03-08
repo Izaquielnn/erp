@@ -1,6 +1,7 @@
 import 'package:erp/app/models/contato.dart';
 import 'package:erp/app/models/lancamento.dart';
 import 'package:erp/app/screens/contatos/contato_widget.dart';
+import 'package:erp/app/screens/financas/edit_lancamento/edit_lancamento_page.dart';
 import 'package:erp/app/screens/financas/lancamento_widget.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:erp/app/shared/components/custom_snack_bar.dart';
@@ -47,7 +48,9 @@ class _FinancasPageState extends State<FinancasPage> {
     return Scaffold(
       backgroundColor: CustomColors.secondary,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Modular.to.pushNamed(EditLancamentoPage.routeName);
+        },
         backgroundColor: CustomColors.primary,
         child: Icon(
           Icons.add,

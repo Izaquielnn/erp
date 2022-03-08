@@ -3,6 +3,7 @@ import 'package:erp/app/shared/components/custom_button.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:erp/app/shared/styles/styled_icons.dart';
 import 'package:erp/app/shared/styles/styles.dart';
+import 'package:erp/app/shared/utils/dates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -19,8 +20,6 @@ class _LancamentoWidgetState extends State<LancamentoWidget> {
   @override
   Widget build(BuildContext context) {
     Lancamento lancamento = widget.lancamento;
-    String createdAt =
-        '${lancamento.createdAt.day.toString().padLeft(2, '0')}/${lancamento.createdAt.month.toString().padLeft(2, '0')}/${lancamento.createdAt.year - 2000}';
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
@@ -36,7 +35,7 @@ class _LancamentoWidgetState extends State<LancamentoWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                createdAt,
+                Dates.format(lancamento.createdAt),
                 style: TextStyles.Body3,
               ),
               Text(

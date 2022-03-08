@@ -1,5 +1,6 @@
 import 'package:erp/app/models/contato.dart';
 import 'package:erp/app/screens/contatos/edit_contato/edit_contato_page.dart';
+import 'package:erp/app/shared/components/custom_button.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:erp/app/shared/styles/styled_icons.dart';
 import 'package:erp/app/shared/styles/styles.dart';
@@ -35,32 +36,16 @@ class _ContatoWidgetState extends State<ContatoWidget> {
           children: [
             ...fieldsToShow(contato),
             SizedBox(height: 20),
-            GestureDetector(
+            CustomButton.secondary(
+              text: 'Editar contato',
               onTap: () {
                 Modular.to
                     .pushNamed(EditContatoPage.routeName, arguments: contato);
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: Corners.sCircularBorder,
-                  color: CustomColors.secondary,
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ImageIcon(
-                      StyledIcons.edit,
-                      color: CustomColors.primary,
-                      size: 18,
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Editar contato',
-                      style: TextStyles.H1.textColor(CustomColors.primary),
-                    )
-                  ],
-                ),
+              icon: ImageIcon(
+                StyledIcons.edit,
+                color: CustomColors.primary,
+                size: 18,
               ),
             ),
             SizedBox(height: 10),

@@ -7,21 +7,35 @@ class CustomButton extends StatelessWidget {
     Key? key,
     required this.text,
     required this.onTap,
-    this.borderRadius,
-    this.textStyle,
-    this.color,
-    this.padding,
+    required this.textStyle,
+    required this.color,
+    required this.padding,
     this.icon,
   }) : super(key: key);
 
   String text;
   void Function() onTap;
-  BorderRadius? borderRadius;
-  TextStyle? textStyle;
-  Color? color;
-  EdgeInsets? padding;
+  TextStyle textStyle;
+  Color color;
+  EdgeInsets padding;
 
   Widget? icon;
+
+  CustomButton.primary({
+    required this.text,
+    required this.onTap,
+    this.icon,
+  })  : this.textStyle = TextStyles.H1.textColor(CustomColors.white),
+        this.color = CustomColors.primary,
+        padding = EdgeInsets.symmetric(horizontal: 2);
+
+  CustomButton.secondary({
+    required this.text,
+    required this.onTap,
+    this.icon,
+  })  : this.textStyle = TextStyles.H1.textColor(CustomColors.primaryVariant),
+        this.color = CustomColors.secondary,
+        padding = EdgeInsets.symmetric(horizontal: 5, vertical: 4);
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +43,18 @@ class CustomButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: color ?? CustomColors.primary,
-          borderRadius: borderRadius ?? Corners.sCircularBorder,
+          borderRadius: Corners.sCircularBorder,
+          color: color,
         ),
-        padding: padding ?? EdgeInsets.symmetric(horizontal: 5),
+        padding: padding,
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            icon ?? SizedBox(),
-            Center(
-              child: Text(
-                text,
-                style: textStyle ?? TextStyles.H1.textColor(CustomColors.white),
-              ),
-            ),
+            if (icon != null) ...[icon ?? SizedBox(), SizedBox(width: 5)],
+            Text(
+              text,
+              style: textStyle,
+            )
           ],
         ),
       ),

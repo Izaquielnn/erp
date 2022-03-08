@@ -10,6 +10,7 @@ class Produto {
   String? grupoTributario;
   String? CFOP;
   String? NCM;
+  String? CEST;
   String? origem;
 
   Produto({
@@ -23,6 +24,7 @@ class Produto {
     this.preco,
     this.tipo,
     this.unidade,
+    this.CEST,
   });
 
   Map<String, dynamic> toMap() {
@@ -36,6 +38,7 @@ class Produto {
       'CFOP': CFOP,
       'NCM': NCM,
       'origem': origem,
+      'CEST': CEST,
     };
   }
 
@@ -51,6 +54,7 @@ class Produto {
       CFOP: map['CFOP'],
       NCM: map['NCM'],
       origem: map['origem'],
+      CEST: map['CEST'],
     );
   }
 

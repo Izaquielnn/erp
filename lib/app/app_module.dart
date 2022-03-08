@@ -36,6 +36,6 @@ class AppModule extends Module {
         child: (_, args) => EditContatoPage(contato: args.data)),
     ChildRoute(ProdutosPage.routeName, child: (_, args) => ProdutosPage()),
     ChildRoute(EditProdutoPage.routeName,
-        child: (_, args) => EditProdutoPage()),
+        child: (_, args) => EditProdutoPage(produto: args.data)),
   ];
 }

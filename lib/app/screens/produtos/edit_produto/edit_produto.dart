@@ -1,24 +1,29 @@
-import 'package:erp/app/models/produto.dart';
-import 'package:erp/app/screens/produtos/edit_produto/product_view_model.dart';
-import 'package:erp/app/shared/components/custom_button.dart';
-import 'package:erp/app/shared/components/dividers.dart';
-import 'package:erp/app/shared/styles/custom_colors.dart';
-import 'package:erp/app/shared/components/custom_dropdown.dart';
-import 'package:erp/app/shared/styles/masks.dart';
-import 'package:erp/app/shared/components/styled_form_field.dart';
-import 'package:erp/app/shared/styles/styled_icons.dart';
-import 'package:erp/app/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import 'package:erp/app/models/produto.dart';
+import 'package:erp/app/screens/produtos/edit_produto/product_view_model.dart';
+import 'package:erp/app/shared/components/custom_button.dart';
+import 'package:erp/app/shared/components/custom_dropdown.dart';
+import 'package:erp/app/shared/components/dividers.dart';
+import 'package:erp/app/shared/components/styled_form_field.dart';
+import 'package:erp/app/shared/styles/custom_colors.dart';
+import 'package:erp/app/shared/styles/masks.dart';
+import 'package:erp/app/shared/styles/styles.dart';
+
 class EditProdutoPage extends StatelessWidget {
-  EditProdutoPage({Key? key, this.produto}) : super(key: key);
+  EditProdutoPage({
+    Key? key,
+    this.produto,
+  }) : super(key: key) {
+    produtoViewModel = ProdutoViewModel(produto: produto);
+  }
 
   static const String routeName = '/edit_produto';
 
   final Produto? produto;
-  ProdutoViewModel produtoViewModel = ProdutoViewModel();
+  late ProdutoViewModel produtoViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +57,13 @@ class EditProdutoPage extends StatelessWidget {
                     valueListenable: produtoViewModel.loading,
                     builder: (context, loading, _) => loading
                         ? CircularProgressIndicator()
-                        : CustomButton(
+                        : CustomButton.primary(
                             text: 'Salvar',
-                            onTap: () {},
+                            onTap: () => produtoViewModel.save(context),
                             icon: Icon(
                               Icons.check,
                               color: CustomColors.white,
                             ),
-                            padding: EdgeInsets.only(right: 5),
                           ),
                   ),
                 ],
@@ -100,59 +104,26 @@ class EditProdutoPage extends StatelessWidget {
                         fillColor: CustomColors.secondary,
                         borderRadius: Corners.s10Border,
                         realtimeValidation: true,
-                        validator: (value) {
-                          if (value == null || value.length < 3) {
-                            return 'Mínimo 3 caracteres';
-                          }
-                          return null;
-                        },
                       ),
                       Dividers.dividerSimple,
-                      StyledFormField(
-                        textEditingController: produtoViewModel.tipoCtrl,
-                        labelText: 'Tipo',
-                        fillColor: CustomColors.secondary,
-                        borderRadius: Corners.s10Border,
-                        realtimeValidation: true,
-                        validator: (value) {
-                          if (value == null || value.length < 3) {
-                            return 'Mínimo 3 caracteres';
-                          }
-                          return null;
+                      CustomDropDown(
+                        itens: produtoViewModel.tipos.value,
+                        onTap: (tipo) {
+                          produtoViewModel.tipoCtrl.text = tipo;
                         },
+                        child: StyledFormField(
+                          textEditingController: produtoViewModel.tipoCtrl,
+                          labelText: 'Tipo',
+                          fillColor: CustomColors.secondary,
+                          borderRadius: Corners.s10Border,
+                          realtimeValidation: true,
+                        ),
                       ),
                       Dividers.dividerSimple,
                       CustomDropDown(
                         itens: produtoViewModel.unidades.value,
-                        actionButton: GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: Corners.sCircularBorder,
-                              color: CustomColors.secondary,
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ImageIcon(
-                                  StyledIcons.add,
-                                  color: CustomColors.primary,
-                                  size: 18,
-                                ),
-                                SizedBox(width: 5),
-                                Text(
-                                  'Adicionar unidade',
-                                  style: TextStyles.H1
-                                      .textColor(CustomColors.primary),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        onTap: (value) {
-                          produtoViewModel.unidadeCtrl.text = value;
+                        onTap: (unidade) {
+                          produtoViewModel.unidadeCtrl.text = unidade;
                         },
                         child: StyledFormField(
                           readOnly: true,
@@ -181,14 +152,20 @@ class EditProdutoPage extends StatelessWidget {
                         style: TextStyles.Body1.textColor(CustomColors.black2),
                       ),
                       Dividers.dividerSimpleTiny,
-                      StyledFormField(
-                        textEditingController:
-                            produtoViewModel.grupoTributarioCtrl,
-                        labelText: 'Grupo tributário',
-                        readOnly: true,
-                        fillColor: CustomColors.secondary,
-                        borderRadius: Corners.s10Border,
-                        realtimeValidation: true,
+                      CustomDropDown(
+                        itens: produtoViewModel.gruposTributarios.value,
+                        onTap: (grupo) {
+                          produtoViewModel.grupoTributarioCtrl.text = grupo;
+                        },
+                        child: StyledFormField(
+                          textEditingController:
+                              produtoViewModel.grupoTributarioCtrl,
+                          labelText: 'Grupo tributário',
+                          readOnly: true,
+                          fillColor: CustomColors.secondary,
+                          borderRadius: Corners.s10Border,
+                          realtimeValidation: true,
+                        ),
                       ),
                       Dividers.dividerSimple,
                       StyledFormField(
@@ -197,12 +174,6 @@ class EditProdutoPage extends StatelessWidget {
                         fillColor: CustomColors.secondary,
                         borderRadius: Corners.s10Border,
                         realtimeValidation: true,
-                        validator: (value) {
-                          if (value == null || value.length < 3) {
-                            return 'Mínimo 3 caracteres';
-                          }
-                          return null;
-                        },
                       ),
                       Dividers.dividerSimple,
                       StyledFormField(
@@ -211,12 +182,6 @@ class EditProdutoPage extends StatelessWidget {
                         fillColor: CustomColors.secondary,
                         borderRadius: Corners.s10Border,
                         realtimeValidation: true,
-                        validator: (value) {
-                          if (value == null || value.length < 3) {
-                            return 'Mínimo 3 caracteres';
-                          }
-                          return null;
-                        },
                       ),
                       Dividers.dividerSimple,
                       StyledFormField(
@@ -225,26 +190,21 @@ class EditProdutoPage extends StatelessWidget {
                         fillColor: CustomColors.secondary,
                         borderRadius: Corners.s10Border,
                         realtimeValidation: true,
-                        validator: (value) {
-                          if (value == null || value.length < 3) {
-                            return 'Mínimo 3 caracteres';
-                          }
-                          return null;
-                        },
                       ),
                       Dividers.dividerSimple,
-                      StyledFormField(
-                        textEditingController: produtoViewModel.origemCtrl,
-                        labelText: 'Origem',
-                        fillColor: CustomColors.secondary,
-                        borderRadius: Corners.s10Border,
-                        realtimeValidation: true,
-                        validator: (value) {
-                          if (value == null || value.length < 3) {
-                            return 'Mínimo 3 caracteres';
-                          }
-                          return null;
+                      CustomDropDown(
+                        itens: produtoViewModel.origens.value,
+                        onTap: (origem) {
+                          produtoViewModel.origemCtrl.text = origem;
                         },
+                        child: StyledFormField(
+                          textEditingController: produtoViewModel.origemCtrl,
+                          labelText: 'Origem',
+                          readOnly: true,
+                          fillColor: CustomColors.secondary,
+                          borderRadius: Corners.s10Border,
+                          realtimeValidation: true,
+                        ),
                       ),
                     ],
                   ),

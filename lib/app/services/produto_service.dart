@@ -15,8 +15,9 @@ class ProdutoService {
 
       if (response.statusCode == 201) {
         var responseBody = jsonDecode(response.body);
+        print(responseBody);
         List<Produto> produtos = responseBody['data']
-            .map<Produto>((p) => Produto.fromJson(p))
+            .map<Produto>((p) => Produto.fromMap(p))
             .toList();
         return produtos;
       }
@@ -39,7 +40,7 @@ class ProdutoService {
 
       if (response.statusCode == 201) {
         var responseBody = jsonDecode(response.body);
-        Produto produto = Produto.fromJson(responseBody['produto']);
+        Produto produto = Produto.fromMap(responseBody['produto']);
         return HttpResponse(
           success: true,
           message: 'Produto cadastrado com sucesso!',
@@ -72,7 +73,7 @@ class ProdutoService {
 
       if (response.statusCode == 202) {
         var responseBody = jsonDecode(response.body);
-        Produto produto = Produto.fromJson(responseBody['produto']);
+        Produto produto = Produto.fromMap(responseBody['produto']);
         return HttpResponse(
           success: true,
           message: 'Produto atualizado com sucesso!',

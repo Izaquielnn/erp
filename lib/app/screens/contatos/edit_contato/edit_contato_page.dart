@@ -61,14 +61,13 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                   ),
                   contatoViewModel.loading
                       ? CircularProgressIndicator()
-                      : CustomButton(
+                      : CustomButton.primary(
                           text: 'Salvar',
                           onTap: () => contatoViewModel.saveContato(context),
                           icon: Icon(
                             Icons.check,
                             color: CustomColors.white,
                           ),
-                          padding: EdgeInsets.only(right: 5),
                         )
                 ],
               ),
@@ -129,22 +128,13 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                                 ),
                               ))
                           .toList(),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        width: 90,
-                        child: CustomButton(
-                          text: ' Add número',
-                          onTap: contatoViewModel.addContatoInput,
-                          icon: ImageIcon(
-                            StyledIcons.add,
-                            size: 14,
-                            color: CustomColors.black2,
-                          ),
-                          color: CustomColors.secondary,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                          textStyle:
-                              TextStyles.Body3.textColor(CustomColors.black2),
+                      CustomButton.secondary(
+                        text: ' Add número',
+                        onTap: contatoViewModel.addContatoInput,
+                        icon: ImageIcon(
+                          StyledIcons.add,
+                          size: 14,
+                          color: CustomColors.primaryVariant,
                         ),
                       ),
                       Dividers.dividerGroup,

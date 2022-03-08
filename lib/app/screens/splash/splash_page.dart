@@ -2,7 +2,7 @@ import 'package:erp/app/screens/contatos/contatos_page.dart';
 import 'package:erp/app/screens/home/home_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
 import 'package:erp/app/services/auth_service.dart';
-import 'package:erp/app/shared/custom_colors.dart';
+import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 

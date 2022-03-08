@@ -1,11 +1,11 @@
 import 'package:erp/app/screens/home/home_page.dart';
 import 'package:erp/app/screens/register/register_page.dart';
 import 'package:erp/app/shared/http_response.dart';
-import 'package:erp/app/shared/styled_form_field.dart';
+import 'package:erp/app/shared/components/styled_form_field.dart';
 import 'package:erp/app/services/auth_service.dart';
-import 'package:erp/app/shared/custom_colors.dart';
-import 'package:erp/app/shared/custom_snack_bar.dart';
-import 'package:erp/app/shared/styles.dart';
+import 'package:erp/app/shared/styles/custom_colors.dart';
+import 'package:erp/app/shared/components/custom_snack_bar.dart';
+import 'package:erp/app/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 

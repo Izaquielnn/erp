@@ -1,4 +1,4 @@
-import 'package:erp/app/shared/custom_colors.dart';
+import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:textstyle_extensions/textstyle_extensions.dart';

@@ -1,23 +1,21 @@
-import 'package:erp/app/models/contato.dart';
-import 'package:erp/app/screens/contatos/edit_contato/edit_contato_page.dart';
+import 'package:erp/app/models/produto.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:erp/app/shared/styles/styled_icons.dart';
 import 'package:erp/app/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
-class ContatoWidget extends StatefulWidget {
-  const ContatoWidget({Key? key, required this.contato}) : super(key: key);
-  final Contato contato;
+class ProdutoWidget extends StatefulWidget {
+  const ProdutoWidget({Key? key, required this.produto}) : super(key: key);
+  final Produto produto;
 
   @override
-  _ContatoWidgetState createState() => _ContatoWidgetState();
+  _ProdutoWidgetState createState() => _ProdutoWidgetState();
 }
 
-class _ContatoWidgetState extends State<ContatoWidget> {
+class _ProdutoWidgetState extends State<ProdutoWidget> {
   @override
   Widget build(BuildContext context) {
-    Contato contato = widget.contato;
+    Produto produto = widget.produto;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
@@ -28,18 +26,12 @@ class _ContatoWidgetState extends State<ContatoWidget> {
           collapsedBackgroundColor: CustomColors.white,
           iconColor: CustomColors.black,
           textColor: CustomColors.black,
-          leading: ImageIcon(
-              contato.cnpj == null ? StyledIcons.user : StyledIcons.industry),
-          title: Text(contato.nome, style: TextStyles.H1),
+          title: Text(produto.descricao, style: TextStyles.H1),
           childrenPadding: EdgeInsets.symmetric(horizontal: 16),
           children: [
-            ...fieldsToShow(contato),
             SizedBox(height: 20),
             GestureDetector(
-              onTap: () {
-                Modular.to
-                    .pushNamed(EditContatoPage.routeName, arguments: contato);
-              },
+              onTap: () {},
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: Corners.sCircularBorder,
@@ -56,7 +48,7 @@ class _ContatoWidgetState extends State<ContatoWidget> {
                     ),
                     SizedBox(width: 5),
                     Text(
-                      'Editar contato',
+                      'Editar produto',
                       style: TextStyles.H1.textColor(CustomColors.primary),
                     )
                   ],
@@ -68,29 +60,6 @@ class _ContatoWidgetState extends State<ContatoWidget> {
         ),
       ),
     );
-  }
-
-  List<Widget> fieldsToShow(Contato contato) {
-    List<Widget> fields = [];
-
-    if (contato.cnpj != null) {
-      fields.add(buildFieldRow(field: 'CNPJ', value: contato.cnpj));
-      fields.add(buildFieldRow(
-          field: 'Razão social', value: contato.empresa.razaoSozial));
-      fields.add(buildFieldRow(
-          field: 'Ins. Estadual', value: contato.empresa.inscEstadual));
-    } else {
-      fields.add(buildFieldRow(field: 'CPF', value: contato.cpf));
-    }
-
-    fields.add(
-        buildFieldRow(field: 'Contatos', value: contato.contatos.join('\n')));
-
-    fields.add(
-        buildFieldRow(field: 'Endereço', value: contato.endereco.toString()));
-    fields.add(buildFieldRow(field: 'Email', value: contato.email));
-
-    return fields;
   }
 
   Widget buildFieldRow({required String field, String? value}) {

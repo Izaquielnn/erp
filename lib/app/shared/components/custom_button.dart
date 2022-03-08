@@ -1,5 +1,5 @@
-import 'package:erp/app/shared/custom_colors.dart';
-import 'package:erp/app/shared/styles.dart';
+import 'package:erp/app/shared/styles/custom_colors.dart';
+import 'package:erp/app/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {

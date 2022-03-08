@@ -1,5 +1,5 @@
-import 'package:erp/app/shared/custom_colors.dart';
-import 'package:erp/app/shared/styles.dart';
+import 'package:erp/app/shared/styles/custom_colors.dart';
+import 'package:erp/app/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,13 +18,17 @@ class StyledFormField extends StatelessWidget {
     this.masks,
     this.autorrect = true,
     this.realtimeValidation = false,
+    this.readOnly = false,
+    this.onChanged,
   }) : super(key: key);
 
   final TextEditingController textEditingController;
   final String? Function(String?)? validator;
+  final void Function(String)? onChanged;
   final String? hintText;
   final String? labelText;
   final bool obscureText;
+  final bool readOnly;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final Color? fillColor;
@@ -36,6 +40,8 @@ class StyledFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: onChanged,
+      readOnly: readOnly,
       obscureText: obscureText,
       controller: textEditingController,
       validator: validator,

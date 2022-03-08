@@ -1,31 +1,31 @@
-import 'package:erp/app/models/contato.dart';
-import 'package:erp/app/screens/contatos/contato_widget.dart';
-import 'package:erp/app/screens/contatos/edit_contato/edit_contato_page.dart';
+import 'package:erp/app/models/produto.dart';
+import 'package:erp/app/screens/produtos/edit_produto/edit_produto.dart';
+import 'package:erp/app/screens/produtos/produto_widget.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:erp/app/shared/components/custom_snack_bar.dart';
 import 'package:erp/app/shared/styles/styled_icons.dart';
 import 'package:erp/app/shared/styles/styles.dart';
-import 'package:erp/app/stores/contato_store.dart';
+import 'package:erp/app/stores/produto_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class ContatosPage extends StatefulWidget {
-  const ContatosPage({Key? key}) : super(key: key);
+class ProdutosPage extends StatefulWidget {
+  const ProdutosPage({Key? key}) : super(key: key);
 
-  static const String routeName = '/contatos';
+  static const String routeName = '/produtos';
 
   @override
-  _ContatosPageState createState() => _ContatosPageState();
+  _ProdutosPageState createState() => _ProdutosPageState();
 }
 
-class _ContatosPageState extends State<ContatosPage> {
-  ContatoStore contatoStore = Modular.get();
+class _ProdutosPageState extends State<ProdutosPage> {
+  ProdutoStore produtoStore = Modular.get();
 
   @override
   initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      contatoStore.fetchContatos();
+      produtoStore.fetchProdutos();
     });
   }
 
@@ -34,7 +34,7 @@ class _ContatosPageState extends State<ContatosPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(
           message:
-              'Ocorreu um erro ao listar os contatos. Tente novamente mais tarde!',
+              'Ocorreu um erro ao listar os produtos. Tente novamente mais tarde!',
           isError: true,
         ),
       );
@@ -47,7 +47,7 @@ class _ContatosPageState extends State<ContatosPage> {
       backgroundColor: CustomColors.secondary,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Modular.to.pushNamed(EditContatoPage.routeName);
+          Modular.to.pushNamed(EditProdutoPage.routeName);
         },
         backgroundColor: CustomColors.primary,
         child: Icon(
@@ -75,7 +75,7 @@ class _ContatosPageState extends State<ContatosPage> {
                   ),
                   Expanded(
                     child: Text(
-                      'Contatos',
+                      'Produtos',
                       style: TextStyles.T1.textColor(CustomColors.primary),
                     ),
                   ),
@@ -88,23 +88,23 @@ class _ContatosPageState extends State<ContatosPage> {
             ),
           ),
           Expanded(
-            child: ValueListenableBuilder(
-              valueListenable: contatoStore,
+            child: ValueListenableBuilder<ProdutoState>(
+              valueListenable: produtoStore,
               builder: (context, state, child) {
-                if (state is LoadingContatoState) {
+                if (state is LoadingProdutoState) {
                   return Center(child: CircularProgressIndicator());
                 }
-                if (state is SuccessContatoState && state.contatos.isNotEmpty) {
+                if (state is SuccessProdutoState && state.produtos.isNotEmpty) {
                   return ListView.builder(
-                    itemCount: state.contatos.length,
+                    itemCount: state.produtos.length,
                     padding: EdgeInsets.all(16),
                     itemBuilder: (context, index) {
-                      Contato contato = state.contatos[index];
-                      return ContatoWidget(contato: contato);
+                      Produto produto = state.produtos[index];
+                      return ProdutoWidget(produto: produto);
                     },
                   );
                 }
-                if (state is ErrorContatoState) {
+                if (state is ErrorProdutoState) {
                   showErrorMessage();
                 }
                 return Column(
@@ -117,7 +117,7 @@ class _ContatosPageState extends State<ContatosPage> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'Sem contatos para exibir,\nadicione clicando no botão abaixo!',
+                      'Sem produtos para exibir,\nadicione clicando no botão abaixo!',
                       style: TextStyles.H1,
                       textAlign: TextAlign.center,
                     )

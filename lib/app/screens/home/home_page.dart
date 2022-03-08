@@ -1,7 +1,8 @@
 import 'package:erp/app/screens/contatos/contatos_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
+import 'package:erp/app/screens/produtos/produtos_page.dart';
 import 'package:erp/app/services/auth_service.dart';
-import 'package:erp/app/shared/custom_colors.dart';
+import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -41,6 +42,13 @@ class _HomePageState extends State<HomePage> {
                 Modular.to.pushNamed(ContatosPage.routeName);
               },
               child: Text('Contatos'),
+            ),
+            SizedBox(height: 30),
+            TextButton(
+              onPressed: () {
+                Modular.to.pushNamed(ProdutosPage.routeName);
+              },
+              child: Text('Produtos'),
             ),
           ],
         ),

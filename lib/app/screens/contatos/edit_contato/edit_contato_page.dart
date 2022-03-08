@@ -1,20 +1,13 @@
 import 'package:erp/app/models/contato.dart';
-import 'package:erp/app/models/empresa.dart';
-import 'package:erp/app/models/endereco.dart';
-import 'package:erp/app/services/cep_service.dart';
-import 'package:erp/app/shared/masks.dart';
-import 'package:erp/app/services/contato_service.dart';
-import 'package:erp/app/shared/custom_button.dart';
-import 'package:erp/app/shared/custom_colors.dart';
-import 'package:erp/app/shared/custom_snack_bar.dart';
-import 'package:erp/app/shared/http_response.dart';
-import 'package:erp/app/shared/styled_form_field.dart';
-import 'package:erp/app/shared/styled_icons.dart';
-import 'package:erp/app/shared/styles.dart';
-import 'package:erp/app/stores/contato_store.dart';
+import 'package:erp/app/screens/contatos/edit_contato/contato_view_model.dart';
+import 'package:erp/app/shared/components/dividers.dart';
+import 'package:erp/app/shared/components/custom_button.dart';
+import 'package:erp/app/shared/styles/custom_colors.dart';
+import 'package:erp/app/shared/components/styled_form_field.dart';
+import 'package:erp/app/shared/styles/styled_icons.dart';
+import 'package:erp/app/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class EditContatoPage extends StatefulWidget {
   const EditContatoPage({Key? key, this.contato}) : super(key: key);
@@ -28,168 +21,13 @@ class EditContatoPage extends StatefulWidget {
 }
 
 class _EditContatoPagePageState extends State<EditContatoPage> {
-  ContatoService contatoService = Modular.get();
-  ContatoStore contatoStore = Modular.get();
-  final formKey = GlobalKey<FormState>();
-  TextEditingController nomeController = TextEditingController();
-  Map<TextEditingController, MaskTextInputFormatter> contatosControllers = {};
-  TextEditingController cpfCnpjController = TextEditingController();
-  TextEditingController razaSocialController = TextEditingController();
-  TextEditingController inscEstadualController = TextEditingController();
-  TextEditingController cepController = TextEditingController();
-  TextEditingController cidadeController = TextEditingController();
-  TextEditingController logradouroController = TextEditingController();
-  TextEditingController ufController = TextEditingController();
-  TextEditingController bairroController = TextEditingController();
-  TextEditingController numeroController = TextEditingController();
-  TextEditingController complementoController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-
-  MaskTextInputFormatter cpfCnpjMask = Masks.cpfCnpjMask();
-  CPF_CNPJ cpf_cnpj = CPF_CNPJ.NONE;
-
-  MaskTextInputFormatter insEstadualMask = Masks.insEstadualMask();
-
-  MaskTextInputFormatter cepMask = Masks.cepMask();
-
-  addContatoInput({String text = ''}) {
-    if (contatosControllers.length < 4) {
-      setState(() => contatosControllers.putIfAbsent(
-          TextEditingController(text: text),
-          () => Masks.contatoMask(text: text)));
-    }
-  }
-
-  removeContatoInput(TextEditingController input) {
-    if (contatosControllers.length == 1) {
-      contatosControllers.keys.first.clear();
-    } else {
-      setState(() => contatosControllers.remove(input));
-    }
-  }
-
-  cpfCnpjListener() {
-    String value = cpfCnpjController.text;
-    CPF_CNPJ status = CPF_CNPJ.NONE;
-    if (value.length == 14) {
-      status = CPF_CNPJ.CPF;
-    } else if (value.length == 18) {
-      status = CPF_CNPJ.CNPJ;
-    }
-    if (status != cpf_cnpj) {
-      cpfCnpjController.value = cpfCnpjMask.updateMask(
-          mask: value.length <= 14 ? Masks.cpfMask : Masks.cnpjMask);
-      setState(() => cpf_cnpj = status);
-    }
-  }
-
-  bool loadingCep = false;
-
-  void cepListener() async {
-    String cep = cepMask.getUnmaskedText();
-    if (cep.length == 8) {
-      setState(() => loadingCep = true);
-      Endereco? endereco = await CepService.search(cep);
-      if (endereco != null) {
-        cidadeController.text = endereco.cidade ?? '';
-        logradouroController.text = endereco.logradouro ?? '';
-        bairroController.text = endereco.bairro ?? '';
-        ufController.text = endereco.uf ?? '';
-      }
-      setState(() => loadingCep = false);
-    }
-  }
-
+  late ContatoViewModel contatoViewModel;
   @override
-  initState() {
-    if (widget.contato != null) {
-      Contato contato = widget.contato ?? Contato(nome: '');
-      nomeController.text = contato.nome;
-
-      cepController.text = contato.endereco.cep ?? '';
-      cepMask = Masks.cepMask(text: cepController.text);
-      cidadeController.text = contato.endereco.cidade ?? '';
-      logradouroController.text = contato.endereco.logradouro ?? '';
-      ufController.text = contato.endereco.uf ?? '';
-      bairroController.text = contato.endereco.bairro ?? '';
-      numeroController.text = contato.endereco.numero ?? '';
-      complementoController.text = contato.endereco.complemento ?? '';
-      emailController.text = contato.email ?? '';
-      for (String num in contato.contatos) {
-        addContatoInput(text: num);
-      }
-      if (widget.contato!.cpf != null) {
-        cpf_cnpj = CPF_CNPJ.CPF;
-        cpfCnpjController.text = widget.contato!.cpf ?? '';
-        cpfCnpjMask = Masks.cpfCnpjMask(
-            text: cpfCnpjController.text, mask: Masks.cpfMask);
-      } else if (widget.contato!.cnpj != null) {
-        cpf_cnpj = CPF_CNPJ.CNPJ;
-        cpfCnpjController.text = widget.contato!.cnpj ?? '';
-        cpfCnpjMask = Masks.cpfCnpjMask(
-            text: cpfCnpjController.text, mask: Masks.cnpjMask);
-        razaSocialController.text = contato.empresa.razaoSozial ?? '';
-        inscEstadualController.text = contato.empresa.inscEstadual ?? '';
-        insEstadualMask =
-            Masks.insEstadualMask(text: inscEstadualController.text);
-      }
-    }
-    if (contatosControllers.isEmpty) addContatoInput();
-    cpfCnpjController.addListener(cpfCnpjListener);
-    cepController.addListener(cepListener);
+  void initState() {
+    contatoViewModel = ContatoViewModel(contato: widget.contato);
+    contatoViewModel.addListener(() => setState(() {}));
     super.initState();
   }
-
-  bool loading = false;
-
-  saveContato() async {
-    if (formKey.currentState!.validate()) {
-      setState(() => loading = true);
-      Contato contato = Contato(
-        nome: nomeController.text,
-        contatos: contatosControllers.keys.map((e) => e.text).toList(),
-        email: getValue(emailController),
-        cpf: cpf_cnpj == CPF_CNPJ.CPF ? cpfCnpjController.text : null,
-        cnpj: cpf_cnpj == CPF_CNPJ.CNPJ ? cpfCnpjController.text : null,
-        empresa: Empresa(
-          inscEstadual: cpf_cnpj == CPF_CNPJ.CNPJ
-              ? getValue(inscEstadualController)
-              : null,
-          razaoSozial:
-              cpf_cnpj == CPF_CNPJ.CNPJ ? getValue(razaSocialController) : null,
-        ),
-        endereco: Endereco(
-          cep: getValue(cepController),
-          cidade: getValue(cidadeController),
-          complemento: getValue(complementoController),
-          bairro: getValue(bairroController),
-          logradouro: getValue(logradouroController),
-          numero: getValue(numeroController),
-          uf: getValue(ufController),
-        ),
-      );
-      HttpResponse<Contato> response;
-
-      if (widget.contato != null) {
-        contato.id = widget.contato!.id;
-        response = await contatoService.updateContato(contato);
-      } else {
-        response = await contatoService.addContato(contato);
-      }
-
-      if (response.success) {
-        contatoStore.fetchContatos();
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(message: response.message, isError: !response.success),
-      );
-      setState(() => loading = false);
-    }
-  }
-
-  String? getValue(TextEditingController controller) =>
-      controller.text.isEmpty ? null : controller.text;
 
   @override
   Widget build(BuildContext context) {
@@ -221,11 +59,11 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                       style: TextStyles.T1.textColor(CustomColors.primary),
                     ),
                   ),
-                  loading
+                  contatoViewModel.loading
                       ? CircularProgressIndicator()
                       : CustomButton(
                           text: 'Salvar',
-                          onTap: saveContato,
+                          onTap: () => contatoViewModel.saveContato(context),
                           icon: Icon(
                             Icons.check,
                             color: CustomColors.white,
@@ -241,12 +79,12 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Form(
-                  key: formKey,
+                  key: contatoViewModel.formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       StyledFormField(
-                        textEditingController: nomeController,
+                        textEditingController: contatoViewModel.nomeController,
                         labelText: 'Nome',
                         hintText: 'Nome ou fantasia',
                         fillColor: CustomColors.secondary,
@@ -259,8 +97,8 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                           return null;
                         },
                       ),
-                      dividerSimple,
-                      ...contatosControllers.entries
+                      Dividers.dividerSimple,
+                      ...contatoViewModel.contatosControllers.entries
                           .map((entry) => Padding(
                                 padding: const EdgeInsets.only(bottom: 5),
                                 child: StyledFormField(
@@ -278,7 +116,8 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                                   fillColor: CustomColors.secondary,
                                   masks: [entry.value],
                                   suffixIcon: GestureDetector(
-                                    onTap: () => removeContatoInput(entry.key),
+                                    onTap: () => contatoViewModel
+                                        .removeContatoInput(entry.key),
                                     child: Center(
                                       widthFactor: 0,
                                       child: ImageIcon(
@@ -295,7 +134,7 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                         width: 90,
                         child: CustomButton(
                           text: ' Add número',
-                          onTap: addContatoInput,
+                          onTap: contatoViewModel.addContatoInput,
                           icon: ImageIcon(
                             StyledIcons.add,
                             size: 14,
@@ -308,10 +147,11 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                               TextStyles.Body3.textColor(CustomColors.black2),
                         ),
                       ),
-                      dividerGroup,
+                      Dividers.dividerGroup,
                       StyledFormField(
-                        textEditingController: cpfCnpjController,
-                        labelText: cpf_cnpj.value,
+                        textEditingController:
+                            contatoViewModel.cpfCnpjController,
+                        labelText: contatoViewModel.cpf_cnpj.value,
                         realtimeValidation: true,
                         validator: (value) {
                           if (value != null &&
@@ -322,12 +162,13 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                           return null;
                         },
                         fillColor: CustomColors.secondary,
-                        masks: [cpfCnpjMask],
+                        masks: [contatoViewModel.cpfCnpjMask],
                       ),
-                      dividerSimple,
-                      if (cpf_cnpj == CPF_CNPJ.CNPJ) ...[
+                      Dividers.dividerSimple,
+                      if (contatoViewModel.cpf_cnpj == CPF_CNPJ.CNPJ) ...[
                         StyledFormField(
-                          textEditingController: razaSocialController,
+                          textEditingController:
+                              contatoViewModel.razaSocialController,
                           labelText: 'Razão social',
                           fillColor: CustomColors.secondary,
                           borderRadius: Corners.s10Border,
@@ -339,14 +180,15 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                             return null;
                           },
                         ),
-                        dividerSimple,
+                        Dividers.dividerSimple,
                         StyledFormField(
-                          textEditingController: inscEstadualController,
+                          textEditingController:
+                              contatoViewModel.inscEstadualController,
                           labelText: 'Insc. Estadual',
                           fillColor: CustomColors.secondary,
                           borderRadius: Corners.s10Border,
                           realtimeValidation: true,
-                          masks: [insEstadualMask],
+                          masks: [contatoViewModel.insEstadualMask],
                           validator: (value) {
                             if (value != null &&
                                 value.isNotEmpty &&
@@ -357,19 +199,20 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                           },
                         ),
                       ],
-                      dividerGroup,
+                      Dividers.dividerGroup,
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
                             width: 100,
                             child: StyledFormField(
-                              textEditingController: cepController,
+                              textEditingController:
+                                  contatoViewModel.cepController,
                               labelText: 'CEP',
                               fillColor: CustomColors.secondary,
                               borderRadius: Corners.s10Border,
                               realtimeValidation: true,
-                              masks: [cepMask],
+                              masks: [contatoViewModel.cepMask],
                               validator: (value) {
                                 if (value != null &&
                                     value.isNotEmpty &&
@@ -380,10 +223,11 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                               },
                             ),
                           ),
-                          dividerVertical,
+                          Dividers.dividerVertical,
                           Expanded(
                             child: StyledFormField(
-                              textEditingController: cidadeController,
+                              textEditingController:
+                                  contatoViewModel.cidadeController,
                               labelText: 'Cidade',
                               fillColor: CustomColors.secondary,
                               borderRadius: Corners.s10Border,
@@ -391,23 +235,25 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                           ),
                         ],
                       ),
-                      dividerSimpleTiny,
+                      Dividers.dividerSimpleTiny,
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: StyledFormField(
-                              textEditingController: logradouroController,
+                              textEditingController:
+                                  contatoViewModel.logradouroController,
                               labelText: 'Logradouro',
                               fillColor: CustomColors.secondary,
                               borderRadius: Corners.s10Border,
                             ),
                           ),
-                          dividerVertical,
+                          Dividers.dividerVertical,
                           SizedBox(
                             width: 80,
                             child: StyledFormField(
-                              textEditingController: numeroController,
+                              textEditingController:
+                                  contatoViewModel.numeroController,
                               labelText: 'Número',
                               fillColor: CustomColors.secondary,
                               borderRadius: Corners.s10Border,
@@ -415,23 +261,25 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                           ),
                         ],
                       ),
-                      dividerSimpleTiny,
+                      Dividers.dividerSimpleTiny,
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: StyledFormField(
-                              textEditingController: bairroController,
+                              textEditingController:
+                                  contatoViewModel.bairroController,
                               labelText: 'Bairro',
                               fillColor: CustomColors.secondary,
                               borderRadius: Corners.s10Border,
                             ),
                           ),
-                          dividerVertical,
+                          Dividers.dividerVertical,
                           SizedBox(
                             width: 80,
                             child: StyledFormField(
-                              textEditingController: ufController,
+                              textEditingController:
+                                  contatoViewModel.ufController,
                               labelText: 'UF',
                               fillColor: CustomColors.secondary,
                               borderRadius: Corners.s10Border,
@@ -439,16 +287,17 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
                           ),
                         ],
                       ),
-                      dividerSimpleTiny,
+                      Dividers.dividerSimpleTiny,
                       StyledFormField(
-                        textEditingController: complementoController,
+                        textEditingController:
+                            contatoViewModel.complementoController,
                         labelText: 'Complemento',
                         fillColor: CustomColors.secondary,
                         borderRadius: Corners.s10Border,
                       ),
-                      dividerGroup,
+                      Dividers.dividerGroup,
                       StyledFormField(
-                        textEditingController: emailController,
+                        textEditingController: contatoViewModel.emailController,
                         labelText: 'Email',
                         fillColor: CustomColors.secondary,
                         borderRadius: Corners.s10Border,
@@ -462,27 +311,5 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
         ],
       ),
     );
-  }
-
-  Widget dividerSimple = SizedBox(height: 10);
-  Widget dividerGroup = SizedBox(height: 30);
-  Widget dividerSimpleTiny = SizedBox(height: 5);
-  Widget dividerVertical = SizedBox(width: 5);
-}
-
-enum CPF_CNPJ { CPF, CNPJ, NONE }
-
-extension ValueExtension on CPF_CNPJ {
-  String get value {
-    switch (this) {
-      case CPF_CNPJ.NONE:
-        return 'CPF / CNPJ';
-      case CPF_CNPJ.CPF:
-        return 'CPF';
-      case CPF_CNPJ.CNPJ:
-        return 'CNPJ';
-      default:
-        return 'CPF / CNPJ';
-    }
   }
 }

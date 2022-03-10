@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:erp/app/models/contato.dart';
 import 'package:erp/app/screens/contatos/edit_contato/edit_contato_page.dart';
 import 'package:erp/app/shared/components/custom_button.dart';
@@ -5,8 +7,6 @@ import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:erp/app/shared/styles/styled_icons.dart';
 import 'package:erp/app/shared/styles/styles.dart';
 import 'package:erp/app/shared/utils/responsive.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class ContatoWidget extends StatefulWidget {
   const ContatoWidget({Key? key, required this.contato}) : super(key: key);
@@ -21,6 +21,101 @@ class _ContatoWidgetState extends State<ContatoWidget> {
   Widget build(BuildContext context) {
     Contato contato = widget.contato;
 
+    if (!Responsive.isMobile(context)) {
+      return tableView();
+    }
+    return cardView(contato);
+  }
+
+  Widget tableView() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: Corners.s10Border,
+        color: CustomColors.white,
+      ),
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.symmetric(vertical: 4),
+      child: TableContatos(
+        children: [
+          Row(
+            children: [
+              ImageIcon(
+                widget.contato.cnpj == null
+                    ? StyledIcons.user
+                    : StyledIcons.industry,
+                color: CustomColors.primaryVariant,
+              ),
+              SizedBox(width: 10),
+              Text(
+                widget.contato.nome,
+                maxLines: 2,
+                style: TextStyles.H2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+          Text(
+            widget.contato.cnpj ?? widget.contato.cpf ?? '',
+            maxLines: 2,
+            style: TextStyles.H2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            widget.contato.contatos.join('\n'),
+            style: TextStyles.H2,
+            maxLines: 2,
+          ),
+          Text(
+            widget.contato.endereco.toString(),
+            maxLines: 2,
+            style: TextStyles.H2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: CustomButton.secondary(
+              text: 'Editar',
+              textStyle: TextStyles.H2.textColor(CustomColors.black),
+              icon: ImageIcon(
+                StyledIcons.edit,
+                color: CustomColors.primaryVariant,
+                size: 14,
+              ),
+              onTap: () {
+                if (Responsive.isMobile(context)) {
+                  Modular.to.pushNamed(EditContatoPage.routeName,
+                      arguments: widget.contato);
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Row(
+                        children: [
+                          Expanded(
+                              flex: 3,
+                              child: Container(
+                                color: Colors.black12,
+                              )),
+                          Expanded(
+                            flex: 2,
+                            child: EditContatoPage(
+                              contato: widget.contato,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget cardView(Contato contato) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: ClipRRect(
@@ -128,6 +223,25 @@ class _ContatoWidgetState extends State<ContatoWidget> {
         ),
         Divider()
       ],
+    );
+  }
+}
+
+class TableContatos extends StatelessWidget {
+  List<Widget> children;
+  TableContatos({
+    Key? key,
+    required this.children,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Table(
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: <int, TableColumnWidth>{
+        3: FlexColumnWidth(1.75),
+        4: IntrinsicColumnWidth()
+      },
+      children: [TableRow(children: children)],
     );
   }
 }

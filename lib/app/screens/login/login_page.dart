@@ -6,6 +6,7 @@ import 'package:erp/app/services/auth_service.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:erp/app/shared/components/custom_snack_bar.dart';
 import 'package:erp/app/shared/styles/styles.dart';
+import 'package:erp/app/stores/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -25,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
 
   AuthService authService = Modular.get();
+  UserStore userStore = Modular.get();
 
   bool loading = false;
 
@@ -36,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.success) {
+      userStore.setUser(response.value);
       Modular.to.popAndPushNamed(ContatosPage.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

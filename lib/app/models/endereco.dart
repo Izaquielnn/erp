@@ -46,6 +46,10 @@ class Endereco {
     address = cep != null ? '$address, $cep' : address;
     address = complemento != null ? '$address, $complemento' : address;
 
-    return address.isEmpty ? '-' : address;
+    if (address.startsWith(',')) {
+      address = address.substring(1);
+    }
+
+    return address.isEmpty ? '' : address;
   }
 }

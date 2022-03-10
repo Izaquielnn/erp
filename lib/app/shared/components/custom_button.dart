@@ -29,12 +29,14 @@ class CustomButton extends StatelessWidget {
   })  : this.textStyle = TextStyles.H1.textColor(CustomColors.white),
         this.color = CustomColors.primary;
 
-  CustomButton.secondary(
-      {required this.text,
-      required this.onTap,
-      this.icon,
-      this.padding = const EdgeInsets.symmetric(horizontal: 5, vertical: 4)})
-      : this.textStyle = TextStyles.H1.textColor(CustomColors.primaryVariant),
+  CustomButton.secondary({
+    required this.text,
+    required this.onTap,
+    this.icon,
+    this.padding = const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+    TextStyle? textStyle,
+  })  : this.textStyle =
+            textStyle ?? TextStyles.H1.textColor(CustomColors.primaryVariant),
         this.color = CustomColors.secondary;
 
   @override

@@ -107,11 +107,14 @@ class TextStyles {
 
   static TextStyle get H2 => lato.bold.size(FontSizes.s12);
 
-  static TextStyle get Body1 => lato.size(FontSizes.s14);
+  static TextStyle get Body1 =>
+      lato.size(FontSizes.s14).textColor(CustomColors.black2);
 
-  static TextStyle get Body2 => lato.size(FontSizes.s12);
+  static TextStyle get Body2 =>
+      lato.size(FontSizes.s12).textColor(CustomColors.black2);
 
-  static TextStyle get Body3 => lato.size(FontSizes.s11);
+  static TextStyle get Body3 =>
+      lato.size(FontSizes.s11).textColor(CustomColors.black2);
 }
 
 class Shadows {

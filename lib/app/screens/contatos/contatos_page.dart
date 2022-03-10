@@ -180,13 +180,50 @@ class _ContatosPageState extends State<ContatosPage> {
                         }
                         if (state is SuccessContatoState &&
                             state.contatos.isNotEmpty) {
-                          return ListView.builder(
-                            itemCount: state.contatos.length,
-                            padding: EdgeInsets.all(16),
-                            itemBuilder: (context, index) {
-                              Contato contato = state.contatos[index];
-                              return ContatoWidget(contato: contato);
-                            },
+                          return Column(
+                            children: [
+                              if (!Responsive.isMobile(context))
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 26,
+                                    vertical: 10,
+                                  ),
+                                  child: TableContatos(
+                                    children: [
+                                      Text(
+                                        'NOME',
+                                        style: TextStyles.Body2,
+                                      ),
+                                      Text(
+                                        'CPF / CNPJ',
+                                        style: TextStyles.Body2,
+                                      ),
+                                      Text(
+                                        'CONTATOS',
+                                        style: TextStyles.Body2,
+                                      ),
+                                      Text(
+                                        'ENDEREÇO',
+                                        style: TextStyles.Body2,
+                                      ),
+                                      Text(
+                                        'AÇÕES',
+                                        style: TextStyles.Body2,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: state.contatos.length,
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  itemBuilder: (context, index) {
+                                    Contato contato = state.contatos[index];
+                                    return ContatoWidget(contato: contato);
+                                  },
+                                ),
+                              ),
+                            ],
                           );
                         }
                         if (state is ErrorContatoState) {

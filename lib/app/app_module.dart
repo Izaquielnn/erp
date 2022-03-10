@@ -35,33 +35,57 @@ class AppModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute(Modular.initialRoute, child: (_, args) => SplashPage()),
-    ChildRoute(LoginPage.routeName, child: (_, args) => LoginPage()),
-    ChildRoute(RegisterPage.routeName, child: (_, args) => RegisterPage()),
-    ChildRoute(ContatosPage.routeName, child: (_, args) => ContatosPage()),
+    ChildRoute(
+      Modular.initialRoute,
+      child: (_, args) => SplashPage(),
+      transition: TransitionType.fadeIn,
+    ),
+    ChildRoute(
+      LoginPage.routeName,
+      child: (_, args) => LoginPage(),
+      transition: TransitionType.fadeIn,
+    ),
+    ChildRoute(
+      RegisterPage.routeName,
+      child: (_, args) => RegisterPage(),
+      transition: TransitionType.fadeIn,
+    ),
+    ChildRoute(
+      ContatosPage.routeName,
+      child: (_, args) => ContatosPage(),
+      transition: TransitionType.fadeIn,
+    ),
     ChildRoute(
       EditContatoPage.routeName,
       child: (_, args) => EditContatoPage(
         contato: args.data is Contato ? args.data : null,
         nome: args.data is String ? args.data : null,
       ),
+      transition: TransitionType.fadeIn,
     ),
-    ChildRoute(ProdutosPage.routeName, child: (_, args) => ProdutosPage()),
+    ChildRoute(
+      ProdutosPage.routeName,
+      child: (_, args) => ProdutosPage(),
+      transition: TransitionType.fadeIn,
+    ),
     ChildRoute(
       EditProdutoPage.routeName,
       child: (_, args) => EditProdutoPage(
         produto: args.data,
       ),
+      transition: TransitionType.fadeIn,
     ),
     ChildRoute(
       FinancasPage.routeName,
       child: (_, args) => FinancasPage(),
+      transition: TransitionType.fadeIn,
     ),
     ChildRoute(
       EditLancamentoPage.routeName,
       child: (_, args) => EditLancamentoPage(
         lancamento: args.data,
       ),
+      transition: TransitionType.fadeIn,
     ),
   ];
 }

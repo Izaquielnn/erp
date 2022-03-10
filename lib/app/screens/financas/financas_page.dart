@@ -1,6 +1,7 @@
 import 'package:erp/app/models/contato.dart';
 import 'package:erp/app/models/lancamento.dart';
 import 'package:erp/app/screens/contatos/contato_widget.dart';
+import 'package:erp/app/screens/financas/card_widget.dart';
 import 'package:erp/app/screens/financas/edit_lancamento/edit_lancamento_page.dart';
 import 'package:erp/app/screens/financas/lancamento_widget.dart';
 import 'package:erp/app/shared/components/custom_appbar.dart';
@@ -180,47 +181,100 @@ class _FinancasPageState extends State<FinancasPage> {
                         }
                         if (state is SuccessLancamentoState &&
                             state.lancamentos.isNotEmpty) {
+                          EdgeInsets padding =
+                              EdgeInsets.symmetric(horizontal: 10);
                           return Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Material(
-                                  elevation: 10,
-                                  borderRadius: Corners.s10Border,
-                                  shadowColor: Colors.black26,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  CardWidget(
+                                    title: 'SALDO',
+                                    value: state.saldo,
+                                    color: CustomColors.primary,
+                                  ),
+                                  CardWidget(
+                                    title: 'ENTRADAS',
+                                    value: state.entradas,
+                                    color: CustomColors.success,
+                                    scale: .5,
+                                  ),
+                                  CardWidget(
+                                    title: 'SAÍDAS',
+                                    value: state.saidas,
+                                    scale: .5,
+                                    color: CustomColors.error,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              if (!Responsive.isMobile(context))
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 26,
+                                    vertical: 10,
+                                  ),
+                                  child: TableLancamentos(
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: padding,
                                         child: Text(
-                                          'Saldo',
-                                          style: TextStyles.Body1.textColor(
-                                              CustomColors.black3),
+                                          'Contato',
+                                          style: TextStyles.Body2,
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(8),
+                                        padding: padding,
                                         child: Text(
-                                          'R\$ ${state.saldo.toStringAsFixed(2)}',
-                                          style: TextStyles.T1
-                                              .size(FontSizes.s36)
-                                              .textColor(state.saldo >= 0
-                                                  ? CustomColors.success
-                                                  : CustomColors.error),
+                                          'Descrição',
+                                          style: TextStyles.Body2,
                                         ),
                                       ),
+                                      Padding(
+                                        padding: padding,
+                                        child: Text(
+                                          'Forma de pagamento',
+                                          style: TextStyles.Body2,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: padding,
+                                        child: Text(
+                                          'Conta',
+                                          style: TextStyles.Body2,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: padding,
+                                        child: Text(
+                                          'Centro de custos',
+                                          style: TextStyles.Body2,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: padding,
+                                        child: Text(
+                                          'Valor',
+                                          style: TextStyles.Body2,
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Padding(
+                                          padding: padding,
+                                          child: Text(
+                                            'AÇÕES',
+                                            style: TextStyles.Body2,
+                                          ),
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),
-                              ),
                               Expanded(
                                 child: ListView.builder(
                                   itemCount: state.lancamentos.length,
-                                  padding: EdgeInsets.all(16),
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
                                   itemBuilder: (context, index) {
                                     Lancamento lancamento =
                                         state.lancamentos[index];

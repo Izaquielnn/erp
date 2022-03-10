@@ -58,7 +58,7 @@ class Menu extends StatelessWidget {
                     buildMenuItem(
                         selected: page == Pages.FINANCAS,
                         title: 'Finanças',
-                        icon: StyledIcons.industry,
+                        icon: StyledIcons.money,
                         onSelect: () {
                           Modular.to.popAndPushNamed(FinancasPage.routeName);
                         }),

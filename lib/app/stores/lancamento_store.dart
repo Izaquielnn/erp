@@ -11,9 +11,20 @@ class LancamentoStore extends ValueNotifier<LancamentoState> {
     List<Lancamento>? lancamentos = await financasService.getLancamentos();
 
     if (lancamentos != null) {
-      double saldo = lancamentos.fold<double>(
-          0, (previousValue, lancamento) => previousValue += lancamento.valor);
-      value = SuccessLancamentoState(lancamentos, saldo);
+      double saldo = 0;
+      double entradas = 0;
+      double saidas = 0;
+      lancamentos.forEach((l) {
+        if (l.valor > 0) {
+          entradas += l.valor;
+        }
+        if (l.valor < 0) {
+          saidas += l.valor;
+        }
+        saldo += l.valor;
+      });
+
+      value = SuccessLancamentoState(lancamentos, saldo, entradas, saidas);
     } else {
       value = ErrorLancamentoState();
     }
@@ -29,7 +40,10 @@ class LoadingLancamentoState extends LancamentoState {}
 class SuccessLancamentoState extends LancamentoState {
   final List<Lancamento> lancamentos;
   final double saldo;
-  SuccessLancamentoState(this.lancamentos, this.saldo);
+  final double entradas;
+  final double saidas;
+  SuccessLancamentoState(
+      this.lancamentos, this.saldo, this.entradas, this.saidas);
 }
 
 class ErrorLancamentoState extends LancamentoState {}

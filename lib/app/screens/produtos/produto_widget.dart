@@ -21,6 +21,106 @@ class _ProdutoWidgetState extends State<ProdutoWidget> {
   Widget build(BuildContext context) {
     Produto produto = widget.produto;
 
+    if (!Responsive.isMobile(context)) {
+      return tableView();
+    }
+
+    return cardView(produto);
+  }
+
+  Widget tableView() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: Corners.s10Border,
+        color: CustomColors.white,
+      ),
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.symmetric(vertical: 4),
+      child: TableProdutos(
+        children: [
+          Row(
+            children: [
+              ImageIcon(
+                StyledIcons.product,
+                color: CustomColors.primaryVariant,
+              ),
+              SizedBox(width: 10),
+              Text(
+                widget.produto.descricao,
+                maxLines: 2,
+                style: TextStyles.H2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+          Text(
+            widget.produto.codigoSKU ?? '',
+            style: TextStyles.H2,
+            maxLines: 2,
+          ),
+          Text(
+            widget.produto.unidade ?? '',
+            maxLines: 2,
+            style: TextStyles.H2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            widget.produto.grupoTributario ?? '',
+            maxLines: 2,
+            style: TextStyles.H2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            'R\$ ${widget.produto.preco?.toStringAsFixed(2)}',
+            maxLines: 2,
+            style: TextStyles.H2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: CustomButton.secondary(
+              text: 'Editar',
+              textStyle: TextStyles.H2.textColor(CustomColors.black),
+              icon: ImageIcon(
+                StyledIcons.edit,
+                color: CustomColors.primaryVariant,
+                size: 14,
+              ),
+              onTap: () {
+                if (Responsive.isMobile(context)) {
+                  Modular.to.pushNamed(EditProdutoPage.routeName,
+                      arguments: widget.produto);
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Row(
+                        children: [
+                          Expanded(
+                              flex: 3,
+                              child: Container(
+                                color: Colors.black12,
+                              )),
+                          Expanded(
+                            flex: 2,
+                            child: EditProdutoPage(
+                              produto: widget.produto,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget cardView(Produto produto) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: ClipRRect(
@@ -142,6 +242,22 @@ class _ProdutoWidgetState extends State<ProdutoWidget> {
         ),
         Divider()
       ],
+    );
+  }
+}
+
+class TableProdutos extends StatelessWidget {
+  List<Widget> children;
+  TableProdutos({
+    Key? key,
+    required this.children,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Table(
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: <int, TableColumnWidth>{5: IntrinsicColumnWidth()},
+      children: [TableRow(children: children)],
     );
   }
 }

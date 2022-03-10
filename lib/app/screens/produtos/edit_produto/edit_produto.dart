@@ -1,3 +1,4 @@
+import 'package:erp/app/shared/components/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -31,49 +32,43 @@ class EditProdutoPage extends StatelessWidget {
       key: produtoViewModel.scaffoldMessengerKey,
       child: Scaffold(
         backgroundColor: CustomColors.white,
-        body: Column(
-          children: [
-            SafeArea(
-              bottom: false,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Modular.to.pop();
-                      },
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: CustomColors.primary,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        produto == null
-                            ? 'Adicionar produto'
-                            : 'Editar produto',
-                        style: TextStyles.T1.textColor(CustomColors.primary),
-                      ),
-                    ),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: produtoViewModel.loading,
-                      builder: (context, loading, _) => loading
-                          ? CircularProgressIndicator()
-                          : CustomButton.primary(
-                              text: 'Salvar',
-                              onTap: () => produtoViewModel.save(context),
-                              icon: Icon(
-                                Icons.check,
-                                color: CustomColors.white,
-                              ),
-                            ),
-                    ),
-                  ],
+        appBar: CustomAppBar(
+          icon: IconButton(
+            onPressed: () {
+              Modular.to.pop();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: CustomColors.primary,
+            ),
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  produto == null ? 'Adicionar produto' : 'Editar produto',
+                  style: TextStyles.T1.textColor(CustomColors.primary),
                 ),
               ),
-            ),
+              ValueListenableBuilder<bool>(
+                valueListenable: produtoViewModel.loading,
+                builder: (context, loading, _) => loading
+                    ? CircularProgressIndicator()
+                    : CustomButton.primary(
+                        text: 'Salvar',
+                        onTap: () => produtoViewModel.save(context),
+                        icon: Icon(
+                          Icons.check,
+                          color: CustomColors.white,
+                        ),
+                      ),
+              ),
+            ],
+          ),
+        ),
+        body: Column(
+          children: [
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(

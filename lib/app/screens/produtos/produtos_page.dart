@@ -178,13 +178,54 @@ class _ProdutosPageState extends State<ProdutosPage> {
                         }
                         if (state is SuccessProdutoState &&
                             state.produtos.isNotEmpty) {
-                          return ListView.builder(
-                            itemCount: state.produtos.length,
-                            padding: EdgeInsets.all(16),
-                            itemBuilder: (context, index) {
-                              Produto produto = state.produtos[index];
-                              return ProdutoWidget(produto: produto);
-                            },
+                          return Column(
+                            children: [
+                              if (!Responsive.isMobile(context))
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 26,
+                                    vertical: 10,
+                                  ),
+                                  child: TableProdutos(
+                                    children: [
+                                      Text(
+                                        'PRODUTO',
+                                        style: TextStyles.Body2,
+                                      ),
+                                      Text(
+                                        'CÓDIGO(SKU)',
+                                        style: TextStyles.Body2,
+                                      ),
+                                      Text(
+                                        'UNIDADE',
+                                        style: TextStyles.Body2,
+                                      ),
+                                      Text(
+                                        'TRIBUTAÇÃO',
+                                        style: TextStyles.Body2,
+                                      ),
+                                      Text(
+                                        'PREÇO',
+                                        style: TextStyles.Body2,
+                                      ),
+                                      Text(
+                                        'AÇÕES',
+                                        style: TextStyles.Body2,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: state.produtos.length,
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  itemBuilder: (context, index) {
+                                    Produto produto = state.produtos[index];
+                                    return ProdutoWidget(produto: produto);
+                                  },
+                                ),
+                              ),
+                            ],
                           );
                         }
                         if (state is ErrorProdutoState) {

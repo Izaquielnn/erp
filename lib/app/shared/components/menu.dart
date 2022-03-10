@@ -51,7 +51,7 @@ class Menu extends StatelessWidget {
                     buildMenuItem(
                         selected: page == Pages.PRODUTOS,
                         title: 'Produtos',
-                        icon: StyledIcons.edit,
+                        icon: StyledIcons.product,
                         onSelect: () {
                           Modular.to.popAndPushNamed(ProdutosPage.routeName);
                         }),

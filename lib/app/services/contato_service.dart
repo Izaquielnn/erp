@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:erp/app/models/contato.dart';
-import 'package:erp/app/shared/authenticated_http_client.dart';
+import 'package:erp/app/shared/utils/authenticated_http_client.dart';
 import 'package:erp/app/shared/config.dart';
-import 'package:erp/app/shared/http_response.dart';
+import 'package:erp/app/shared/utils/http_response.dart';
 import 'package:http/http.dart';
 
 class ContatoService {
@@ -24,6 +24,25 @@ class ContatoService {
     } catch (e) {
       print(e);
       return null;
+    }
+  }
+
+  Future<List<Contato>> searchContatos(String pattern) async {
+    try {
+      var response = await http
+          .get(Uri.parse('${Config.baseUrl}/contato/search?query=$pattern'));
+
+      if (response.statusCode == 201) {
+        var responseBody = jsonDecode(response.body);
+        List<Contato> contatos = responseBody['data']
+            .map<Contato>((c) => Contato.fromJson(c))
+            .toList();
+        return contatos;
+      }
+      return [];
+    } catch (e) {
+      print(e);
+      return [];
     }
   }
 

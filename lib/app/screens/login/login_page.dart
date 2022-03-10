@@ -1,6 +1,6 @@
-import 'package:erp/app/screens/home/home_page.dart';
+import 'package:erp/app/screens/contatos/contatos_page.dart';
 import 'package:erp/app/screens/register/register_page.dart';
-import 'package:erp/app/shared/http_response.dart';
+import 'package:erp/app/shared/utils/http_response.dart';
 import 'package:erp/app/shared/components/styled_form_field.dart';
 import 'package:erp/app/services/auth_service.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.success) {
-      Modular.to.popAndPushNamed(HomePage.routeName);
+      Modular.to.popAndPushNamed(ContatosPage.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(message: response.message, isError: true),
@@ -52,90 +52,98 @@ class _LoginPageState extends State<LoginPage> {
       onWillPop: () async => false,
       child: Scaffold(
         backgroundColor: CustomColors.secondary,
-        body: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(
-                flex: 1,
-                child: Center(
-                  child: Text(
-                    'ERP',
-                    style: TextStyles.T1
-                        .textColor(CustomColors.primary)
-                        .size(FontSizes.s36),
-                  ),
-                ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 400,
               ),
-              Flexible(
-                flex: 2,
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      StyledFormField(
-                        textEditingController: emailController,
-                        labelText: 'Email',
-                        hintText: 'fulano@email.com',
-                        prefixIcon: Icon(Icons.email),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: Center(
+                      child: Text(
+                        'ERP',
+                        style: TextStyles.T1
+                            .textColor(CustomColors.primary)
+                            .size(FontSizes.s36),
                       ),
-                      SizedBox(height: 10),
-                      StyledFormField(
-                        textEditingController: passwordController,
-                        labelText: 'Senha',
-                        hintText: '***',
-                        obscureText: true,
-                        prefixIcon: Icon(Icons.lock),
-                      ),
-                      SizedBox(height: 40),
-                      loading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : GestureDetector(
-                              onTap: login,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: CustomColors.primary,
-                                  borderRadius: Corners.s10Border,
-                                ),
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Center(
-                                  child: Text(
-                                    'ENTRAR',
-                                    style: TextStyles.T1
-                                        .textColor(CustomColors.white),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          StyledFormField(
+                            textEditingController: emailController,
+                            labelText: 'Email',
+                            hintText: 'fulano@email.com',
+                            prefixIcon: Icon(Icons.email),
+                          ),
+                          SizedBox(height: 10),
+                          StyledFormField(
+                            textEditingController: passwordController,
+                            labelText: 'Senha',
+                            hintText: '***',
+                            obscureText: true,
+                            prefixIcon: Icon(Icons.lock),
+                          ),
+                          SizedBox(height: 40),
+                          loading
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : GestureDetector(
+                                  onTap: login,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: CustomColors.primary,
+                                      borderRadius: Corners.s10Border,
+                                    ),
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Center(
+                                      child: Text(
+                                        'ENTRAR',
+                                        style: TextStyles.T1
+                                            .textColor(CustomColors.white),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                    ],
-                  ),
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: InkWell(
-                  onTap: () =>
-                      Modular.to.popAndPushNamed(RegisterPage.routeName),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Ainda não possui conta?',
-                        style: TextStyles.H2,
+                        ],
                       ),
-                      Text(
-                        'Cadastrar',
-                        style: TextStyles.H1.textColor(CustomColors.primary),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  Flexible(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: () =>
+                          Modular.to.popAndPushNamed(RegisterPage.routeName),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Ainda não possui conta?',
+                            style: TextStyles.H2,
+                          ),
+                          Text(
+                            'Cadastrar',
+                            style:
+                                TextStyles.H1.textColor(CustomColors.primary),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'package:erp/app/models/user.dart';
-import 'package:erp/app/shared/authenticated_http_client.dart';
+import 'package:erp/app/shared/utils/authenticated_http_client.dart';
 import 'package:erp/app/shared/config.dart';
-import 'package:erp/app/shared/http_response.dart';
+import 'package:erp/app/shared/utils/http_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   AuthenticatedHttpClient http;
   AuthService(this.http);
 
-  Future<HttpResponse> login(
+  Future<HttpResponse<User>> login(
       {required String email, required String password}) async {
     try {
       var response = await http.post(
@@ -29,6 +29,7 @@ class AuthService {
         return HttpResponse(
           success: true,
           message: 'Login realizado com sucesso!',
+          value: User.fromMap(responseBody['tenant']),
         );
       } else {
         return HttpResponse(

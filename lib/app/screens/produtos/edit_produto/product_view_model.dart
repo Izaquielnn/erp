@@ -1,7 +1,7 @@
 import 'package:erp/app/models/produto.dart';
 import 'package:erp/app/services/produto_service.dart';
 import 'package:erp/app/shared/components/custom_snack_bar.dart';
-import 'package:erp/app/shared/http_response.dart';
+import 'package:erp/app/shared/utils/http_response.dart';
 import 'package:erp/app/stores/produto_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -9,6 +9,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 class ProdutoViewModel extends ChangeNotifier {
   ProdutoService produtoService = Modular.get();
   ProdutoStore produtoStore = Modular.get();
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey();
   Produto? produto;
   var loading = ValueNotifier(false);
   var unidades = ValueNotifier(['KG', 'UN']);
@@ -92,7 +93,7 @@ class ProdutoViewModel extends ChangeNotifier {
         produtoStore.fetchProdutos();
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      scaffoldMessengerKey.currentState?.showSnackBar(
         CustomSnackBar(message: response.message, isError: !response.success),
       );
     }

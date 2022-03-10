@@ -1,8 +1,8 @@
 import 'package:erp/app/screens/contatos/contatos_page.dart';
-import 'package:erp/app/screens/home/home_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
 import 'package:erp/app/services/auth_service.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
+import 'package:erp/app/stores/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -15,12 +15,14 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   AuthService authService = Modular.get();
+  UserStore userStore = Modular.get();
 
   @override
   void initState() {
     authService.me().then((user) {
       if (user != null) {
-        Modular.to.popAndPushNamed(HomePage.routeName);
+        userStore.setUser(user);
+        Modular.to.popAndPushNamed(ContatosPage.routeName);
       } else {
         Modular.to.popAndPushNamed(LoginPage.routeName);
       }

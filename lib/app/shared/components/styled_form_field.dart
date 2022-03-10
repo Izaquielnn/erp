@@ -20,6 +20,7 @@ class StyledFormField extends StatelessWidget {
     this.realtimeValidation = false,
     this.readOnly = false,
     this.onChanged,
+    this.textColor,
   }) : super(key: key);
 
   final TextEditingController textEditingController;
@@ -32,6 +33,7 @@ class StyledFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final Color? fillColor;
+  final Color? textColor;
   final BorderRadius? borderRadius;
   final List<TextInputFormatter>? masks;
   final bool autorrect;
@@ -45,7 +47,7 @@ class StyledFormField extends StatelessWidget {
       obscureText: obscureText,
       controller: textEditingController,
       validator: validator,
-      style: TextStyles.H1,
+      style: TextStyles.H1.textColor(textColor ?? CustomColors.black),
       inputFormatters: masks,
       autocorrect: autorrect,
       autovalidateMode: realtimeValidation

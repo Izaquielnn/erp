@@ -4,7 +4,7 @@ import 'package:erp/app/models/endereco.dart';
 import 'package:erp/app/services/cep_service.dart';
 import 'package:erp/app/services/contato_service.dart';
 import 'package:erp/app/shared/components/custom_snack_bar.dart';
-import 'package:erp/app/shared/http_response.dart';
+import 'package:erp/app/shared/utils/http_response.dart';
 import 'package:erp/app/shared/styles/masks.dart';
 import 'package:erp/app/stores/contato_store.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +15,8 @@ class ContatoViewModel extends ChangeNotifier {
   ContatoService contatoService = Modular.get();
   ContatoStore contatoStore = Modular.get();
   Contato? contato;
+
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey();
 
   final formKey = GlobalKey<FormState>();
   TextEditingController nomeController = TextEditingController();
@@ -171,7 +173,7 @@ class ContatoViewModel extends ChangeNotifier {
         contatoStore.fetchContatos();
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      scaffoldMessengerKey.currentState?.showSnackBar(
         CustomSnackBar(message: response.message, isError: !response.success),
       );
       loading = false;

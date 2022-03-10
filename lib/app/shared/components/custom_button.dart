@@ -25,17 +25,17 @@ class CustomButton extends StatelessWidget {
     required this.text,
     required this.onTap,
     this.icon,
+    this.padding = const EdgeInsets.symmetric(horizontal: 2),
   })  : this.textStyle = TextStyles.H1.textColor(CustomColors.white),
-        this.color = CustomColors.primary,
-        padding = EdgeInsets.symmetric(horizontal: 2);
+        this.color = CustomColors.primary;
 
-  CustomButton.secondary({
-    required this.text,
-    required this.onTap,
-    this.icon,
-  })  : this.textStyle = TextStyles.H1.textColor(CustomColors.primaryVariant),
-        this.color = CustomColors.secondary,
-        padding = EdgeInsets.symmetric(horizontal: 5, vertical: 4);
+  CustomButton.secondary(
+      {required this.text,
+      required this.onTap,
+      this.icon,
+      this.padding = const EdgeInsets.symmetric(horizontal: 5, vertical: 4)})
+      : this.textStyle = TextStyles.H1.textColor(CustomColors.primaryVariant),
+        this.color = CustomColors.secondary;
 
   @override
   Widget build(BuildContext context) {

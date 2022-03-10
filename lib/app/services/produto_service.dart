@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:erp/app/models/produto.dart';
-import 'package:erp/app/shared/authenticated_http_client.dart';
+import 'package:erp/app/shared/utils/authenticated_http_client.dart';
 import 'package:erp/app/shared/config.dart';
-import 'package:erp/app/shared/http_response.dart';
+import 'package:erp/app/shared/utils/http_response.dart';
 import 'package:http/http.dart';
 
 class ProdutoService {

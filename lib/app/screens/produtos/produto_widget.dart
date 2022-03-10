@@ -4,6 +4,7 @@ import 'package:erp/app/shared/components/custom_button.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:erp/app/shared/styles/styled_icons.dart';
 import 'package:erp/app/shared/styles/styles.dart';
+import 'package:erp/app/shared/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -76,8 +77,31 @@ class _ProdutoWidgetState extends State<ProdutoWidget> {
             CustomButton.secondary(
               text: 'Editar produto',
               onTap: () {
-                Modular.to
-                    .pushNamed(EditProdutoPage.routeName, arguments: produto);
+                if (Responsive.isMobile(context)) {
+                  Modular.to
+                      .pushNamed(EditProdutoPage.routeName, arguments: produto);
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Row(
+                        children: [
+                          Expanded(
+                              flex: 3,
+                              child: Container(
+                                color: Colors.black12,
+                              )),
+                          Expanded(
+                            flex: 2,
+                            child: EditProdutoPage(
+                              produto: widget.produto,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
               },
               icon: ImageIcon(
                 StyledIcons.edit,

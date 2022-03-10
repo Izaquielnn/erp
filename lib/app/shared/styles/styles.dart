@@ -11,7 +11,7 @@ class Durations {
 
   static const Duration medium = Duration(milliseconds: 750);
 
-  static const Duration slow = Duration(milliseconds: 1500);
+  static const Duration slow = Duration(seconds: 3);
 }
 
 class Fonts {

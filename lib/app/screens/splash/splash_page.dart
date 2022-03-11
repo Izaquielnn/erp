@@ -1,4 +1,4 @@
-import 'package:erp/app/screens/contatos/contatos_page.dart';
+import 'package:erp/app/screens/financas/financas_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
 import 'package:erp/app/services/auth_service.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
@@ -22,7 +22,7 @@ class _SplashPageState extends State<SplashPage> {
     authService.me().then((user) {
       if (user != null) {
         userStore.setUser(user);
-        Modular.to.popAndPushNamed(ContatosPage.routeName);
+        Modular.to.popAndPushNamed(FinancasPage.routeName);
       } else {
         Modular.to.popAndPushNamed(LoginPage.routeName);
       }

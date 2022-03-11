@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:erp/app/models/contato.dart';
 
 class Lancamento {
@@ -31,6 +33,7 @@ class Lancamento {
       'conta': conta,
       'competencia': competencia?.toIso8601String(),
       'categoria': categoria,
+      'formaPagamento': formaPagamento,
     };
   }
 
@@ -47,4 +50,6 @@ class Lancamento {
         competencia: DateTime.parse(map['competencia']),
         formaPagamento: map['formaPagamento']);
   }
+
+  String toJson() => json.encode(toMap());
 }

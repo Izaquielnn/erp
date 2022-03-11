@@ -89,13 +89,15 @@ class ProdutoViewModel extends ChangeNotifier {
         response = await produtoService.addProduto(newProduto);
       }
 
-      if (response.success) {
-        produtoStore.fetchProdutos();
-      }
-
       scaffoldMessengerKey.currentState?.showSnackBar(
         CustomSnackBar(message: response.message, isError: !response.success),
       );
+
+      if (response.success) {
+        produtoStore.fetchProdutos();
+        await Future.delayed(Duration(seconds: 1));
+        Modular.to.pop();
+      }
     }
   }
 

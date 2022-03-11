@@ -1,4 +1,4 @@
-import 'package:erp/app/screens/contatos/contatos_page.dart';
+import 'package:erp/app/screens/financas/financas_page.dart';
 import 'package:erp/app/screens/register/register_page.dart';
 import 'package:erp/app/shared/utils/http_response.dart';
 import 'package:erp/app/shared/components/styled_form_field.dart';
@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.success) {
       userStore.setUser(response.value);
-      Modular.to.popAndPushNamed(ContatosPage.routeName);
+      Modular.to.popAndPushNamed(FinancasPage.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(message: response.message, isError: true),

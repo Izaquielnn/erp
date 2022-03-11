@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:erp/app/models/lancamento.dart';
-import 'package:erp/app/models/produto.dart';
 import 'package:erp/app/shared/utils/authenticated_http_client.dart';
 import 'package:erp/app/shared/config.dart';
 import 'package:erp/app/shared/utils/http_response.dart';
@@ -29,23 +28,20 @@ class FinancasService {
     }
   }
 
-  Future<HttpResponse<Produto>> addProduto(Produto produto) async {
+  Future<HttpResponse<Lancamento>> addLancamento(Lancamento lancamento) async {
     try {
       var response = await http.post(
-        Uri.parse('${Config.baseUrl}/produto'),
+        Uri.parse('${Config.baseUrl}/lancamento'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: produto.toJson(),
+        body: lancamento.toJson(),
       );
 
       if (response.statusCode == 201) {
-        var responseBody = jsonDecode(response.body);
-        Produto produto = Produto.fromMap(responseBody['produto']);
         return HttpResponse(
           success: true,
-          message: 'Produto cadastrado com sucesso!',
-          value: produto,
+          message: 'Lançamento cadastrado com sucesso!',
         );
       }
 
@@ -61,24 +57,23 @@ class FinancasService {
     }
   }
 
-  Future<HttpResponse<Produto>> updateProduto(Produto produto) async {
+  Future<HttpResponse<Lancamento>> updateLancamento(
+    Lancamento lancamento,
+  ) async {
     try {
       Response response;
-      String body = produto.toJson();
+      String body = lancamento.toJson();
       Map<String, String> headers = {
         'Content-Type': 'application/json; charset=UTF-8'
       };
 
-      Uri uri = Uri.parse('${Config.baseUrl}/produto/${produto.id}');
+      Uri uri = Uri.parse('${Config.baseUrl}/lancamento/${lancamento.id}');
       response = await http.put(uri, body: body, headers: headers);
 
       if (response.statusCode == 202) {
-        var responseBody = jsonDecode(response.body);
-        Produto produto = Produto.fromMap(responseBody['produto']);
         return HttpResponse(
           success: true,
-          message: 'Produto atualizado com sucesso!',
-          value: produto,
+          message: 'Lançamento atualizado com sucesso!',
         );
       }
 

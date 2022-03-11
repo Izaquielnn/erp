@@ -43,7 +43,7 @@ class _EditContatoPagePageState extends State<EditContatoPage> {
         appBar: CustomAppBar(
           icon: IconButton(
             onPressed: () {
-              Modular.to.pop();
+              Modular.to.pop<Contato?>(contatoViewModel.contato);
             },
             icon: Icon(
               Icons.arrow_back_ios,

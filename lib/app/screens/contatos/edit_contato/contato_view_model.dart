@@ -169,13 +169,17 @@ class ContatoViewModel extends ChangeNotifier {
         response = await contatoService.addContato(newContato);
       }
 
-      if (response.success) {
-        contatoStore.fetchContatos();
-      }
-
       scaffoldMessengerKey.currentState?.showSnackBar(
         CustomSnackBar(message: response.message, isError: !response.success),
       );
+
+      if (response.success) {
+        contato = response.value;
+        contatoStore.fetchContatos();
+        await Future.delayed(Duration(seconds: 1));
+        Modular.to.pop<Contato?>(contato);
+      }
+
       loading = false;
       notifyListeners();
     }

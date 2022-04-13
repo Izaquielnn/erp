@@ -1,14 +1,11 @@
-import 'package:erp/app/models/produto.dart';
 import 'package:erp/app/screens/produtos/edit_produto/edit_produto.dart';
-import 'package:erp/app/screens/produtos/produto_widget.dart';
-import 'package:erp/app/shared/components/custom_appbar.dart';
+import 'package:erp/app/screens/produtos/table_produtos.dart';
 import 'package:erp/app/shared/components/custom_button.dart';
 import 'package:erp/app/shared/components/menu.dart';
 import 'package:erp/app/shared/styles/custom_colors.dart';
 import 'package:erp/app/shared/components/custom_snack_bar.dart';
 import 'package:erp/app/shared/styles/styled_icons.dart';
 import 'package:erp/app/shared/styles/styles.dart';
-import 'package:erp/app/shared/utils/responsive.dart';
 import 'package:erp/app/stores/produto_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -45,130 +42,86 @@ class _ProdutosPageState extends State<ProdutosPage> {
     });
   }
 
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        key: _drawerKey,
-        drawer:
-            Responsive.isMobile(context) ? Menu(page: Pages.PRODUTOS) : null,
-        appBar: Responsive.isMobile(context)
-            ? CustomAppBar(
-                icon: IconButton(
-                  onPressed: () {
-                    _drawerKey.currentState!.openDrawer();
-                  },
-                  icon: Icon(
-                    Icons.menu,
-                    color: CustomColors.primary,
-                  ),
-                ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Produtos',
-                      style: TextStyles.T1.textColor(CustomColors.primary),
-                    ),
-                    ImageIcon(
-                      StyledIcons.search,
-                      color: CustomColors.primary,
-                    ),
-                  ],
-                ),
-              )
-            : null,
         backgroundColor: CustomColors.secondary,
-        floatingActionButton: Responsive.isMobile(context)
-            ? FloatingActionButton(
-                onPressed: () {
-                  Modular.to.pushNamed(EditProdutoPage.routeName);
-                },
-                backgroundColor: CustomColors.primary,
-                child: Icon(
-                  Icons.add,
-                  size: 36,
-                ),
-              )
-            : null,
         body: Row(
           children: [
-            if (!Responsive.isMobile(context)) Menu(page: Pages.PRODUTOS),
+            Menu(page: Pages.PRODUTOS),
             Expanded(
               child: Column(
                 children: [
-                  if (!Responsive.isMobile(context))
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Produtos',
-                              style:
-                                  TextStyles.T1.textColor(CustomColors.primary),
-                            ),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Produtos',
+                            style:
+                                TextStyles.T1.textColor(CustomColors.primary),
                           ),
-                          Container(
-                            alignment: Alignment.centerRight,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: CustomColors.white,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  'Pesquisar',
-                                  style: TextStyles.Body1.textColor(
-                                      CustomColors.black3),
-                                ),
-                                SizedBox(width: 20),
-                                ImageIcon(
-                                  StyledIcons.search,
-                                  color: CustomColors.primaryVariant,
-                                  size: 18,
-                                ),
-                              ],
-                            ),
+                        ),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: CustomColors.white,
+                            borderRadius: BorderRadius.circular(100),
                           ),
-                          SizedBox(
-                            width: 30,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                'Pesquisar',
+                                style: TextStyles.Body1.textColor(
+                                    CustomColors.black3),
+                              ),
+                              SizedBox(width: 20),
+                              ImageIcon(
+                                StyledIcons.search,
+                                color: CustomColors.primaryVariant,
+                                size: 18,
+                              ),
+                            ],
                           ),
-                          CustomButton.primary(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 5),
-                            text: 'Criar produto',
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 3,
-                                          child: Container(
-                                            color: Colors.black12,
-                                          )),
-                                      Expanded(
-                                        flex: 2,
-                                        child: EditProdutoPage(),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        CustomButton.primary(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          text: 'Criar produto',
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 3,
+                                        child: Container(
+                                          color: Colors.black12,
+                                        )),
+                                    Expanded(
+                                      flex: 2,
+                                      child: EditProdutoPage(),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
                     ),
+                  ),
                   Expanded(
                     child: ValueListenableBuilder<ProdutoState>(
                       valueListenable: produtoStore,
@@ -178,55 +131,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
                         }
                         if (state is SuccessProdutoState &&
                             state.produtos.isNotEmpty) {
-                          return Column(
-                            children: [
-                              if (!Responsive.isMobile(context))
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 26,
-                                    vertical: 10,
-                                  ),
-                                  child: TableProdutos(
-                                    children: [
-                                      Text(
-                                        'PRODUTO',
-                                        style: TextStyles.Body2,
-                                      ),
-                                      Text(
-                                        'CÓDIGO(SKU)',
-                                        style: TextStyles.Body2,
-                                      ),
-                                      Text(
-                                        'UNIDADE',
-                                        style: TextStyles.Body2,
-                                      ),
-                                      Text(
-                                        'TRIBUTAÇÃO',
-                                        style: TextStyles.Body2,
-                                      ),
-                                      Text(
-                                        'PREÇO',
-                                        style: TextStyles.Body2,
-                                      ),
-                                      Text(
-                                        'AÇÕES',
-                                        style: TextStyles.Body2,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: state.produtos.length,
-                                  padding: EdgeInsets.symmetric(horizontal: 16),
-                                  itemBuilder: (context, index) {
-                                    Produto produto = state.produtos[index];
-                                    return ProdutoWidget(produto: produto);
-                                  },
-                                ),
-                              ),
-                            ],
-                          );
+                          return TableProdutos(produtos: state.produtos);
                         }
                         if (state is ErrorProdutoState) {
                           showErrorMessage();

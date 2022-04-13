@@ -15,7 +15,6 @@ class FinancasService {
 
       if (response.statusCode == 201) {
         var responseBody = jsonDecode(response.body);
-        print(responseBody);
         List<Lancamento> lancamentos = responseBody['data']
             .map<Lancamento>((p) => Lancamento.fromMap(p))
             .toList();

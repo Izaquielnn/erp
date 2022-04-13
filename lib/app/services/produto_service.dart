@@ -15,7 +15,6 @@ class ProdutoService {
 
       if (response.statusCode == 201) {
         var responseBody = jsonDecode(response.body);
-        print(responseBody);
         List<Produto> produtos = responseBody['data']
             .map<Produto>((p) => Produto.fromMap(p))
             .toList();

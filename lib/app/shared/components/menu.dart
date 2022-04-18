@@ -2,6 +2,7 @@ import 'package:erp/app/models/user.dart';
 import 'package:erp/app/screens/contatos/contatos_page.dart';
 import 'package:erp/app/screens/financas/financas_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
+import 'package:erp/app/screens/pedidos/pedidos_page.dart';
 import 'package:erp/app/screens/produtos/produtos_page.dart';
 import 'package:erp/app/services/auth_service.dart';
 import 'package:erp/app/shared/components/custom_button.dart';
@@ -12,7 +13,7 @@ import 'package:erp/app/stores/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-enum Pages { CONTATOS, PRODUTOS, FINANCAS }
+enum Pages { CONTATOS, PRODUTOS, FINANCAS, PEDIDOS }
 
 class Menu extends StatelessWidget {
   Menu({Key? key, required this.page}) : super(key: key);
@@ -42,26 +43,37 @@ class Menu extends StatelessWidget {
                 child: Column(
                   children: [
                     buildMenuItem(
-                        selected: page == Pages.CONTATOS,
-                        title: 'Contatos',
-                        icon: StyledIcons.user,
-                        onSelect: () {
-                          Modular.to.popAndPushNamed(ContatosPage.routeName);
-                        }),
+                      selected: page == Pages.CONTATOS,
+                      title: 'Contatos',
+                      icon: StyledIcons.user,
+                      onSelect: () {
+                        Modular.to.popAndPushNamed(ContatosPage.routeName);
+                      },
+                    ),
                     buildMenuItem(
-                        selected: page == Pages.PRODUTOS,
-                        title: 'Produtos',
-                        icon: StyledIcons.product,
-                        onSelect: () {
-                          Modular.to.popAndPushNamed(ProdutosPage.routeName);
-                        }),
+                      selected: page == Pages.PRODUTOS,
+                      title: 'Produtos',
+                      icon: StyledIcons.product,
+                      onSelect: () {
+                        Modular.to.popAndPushNamed(ProdutosPage.routeName);
+                      },
+                    ),
                     buildMenuItem(
-                        selected: page == Pages.FINANCAS,
-                        title: 'Finanças',
-                        icon: StyledIcons.money,
-                        onSelect: () {
-                          Modular.to.popAndPushNamed(FinancasPage.routeName);
-                        }),
+                      selected: page == Pages.FINANCAS,
+                      title: 'Finanças',
+                      icon: StyledIcons.money,
+                      onSelect: () {
+                        Modular.to.popAndPushNamed(FinancasPage.routeName);
+                      },
+                    ),
+                    buildMenuItem(
+                      selected: page == Pages.PEDIDOS,
+                      title: 'Pedidos',
+                      icon: StyledIcons.label,
+                      onSelect: () {
+                        Modular.to.popAndPushNamed(PedidosPage.routeName);
+                      },
+                    ),
                   ],
                 ),
               ),

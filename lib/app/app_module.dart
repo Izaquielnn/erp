@@ -4,12 +4,14 @@ import 'package:erp/app/screens/contatos/edit_contato/edit_contato_page.dart';
 import 'package:erp/app/screens/financas/edit_lancamento/edit_lancamento_page.dart';
 import 'package:erp/app/screens/financas/financas_page.dart';
 import 'package:erp/app/screens/login/login_page.dart';
+import 'package:erp/app/screens/pedidos/pedidos_page.dart';
 import 'package:erp/app/screens/produtos/edit_produto/edit_produto.dart';
 import 'package:erp/app/screens/produtos/produtos_page.dart';
 import 'package:erp/app/screens/register/register_page.dart';
 import 'package:erp/app/screens/splash/splash_page.dart';
 import 'package:erp/app/services/auth_service.dart';
 import 'package:erp/app/services/financas_service.dart';
+import 'package:erp/app/services/pedido_service.dart';
 import 'package:erp/app/services/produto_service.dart';
 import 'package:erp/app/shared/utils/authenticated_http_client.dart';
 import 'package:erp/app/services/contato_service.dart';
@@ -27,6 +29,7 @@ class AppModule extends Module {
     Bind((i) => ContatoService(i.get())),
     Bind((i) => ProdutoService(i.get())),
     Bind((i) => FinancasService(i.get())),
+    Bind((i) => PedidoService(i.get())),
     Bind((i) => ContatoStore(i.get())),
     Bind((i) => ProdutoStore(i.get())),
     Bind((i) => LancamentoStore(i.get())),
@@ -85,6 +88,11 @@ class AppModule extends Module {
       child: (_, args) => EditLancamentoPage(
         lancamento: args.data,
       ),
+      transition: TransitionType.fadeIn,
+    ),
+    ChildRoute(
+      PedidosPage.routeName,
+      child: (_, args) => PedidosPage(),
       transition: TransitionType.fadeIn,
     ),
   ];

@@ -17,6 +17,7 @@ import 'package:erp/app/shared/utils/authenticated_http_client.dart';
 import 'package:erp/app/services/contato_service.dart';
 import 'package:erp/app/stores/contato_store.dart';
 import 'package:erp/app/stores/lancamento_store.dart';
+import 'package:erp/app/stores/pedido_store.dart';
 import 'package:erp/app/stores/produto_store.dart';
 import 'package:erp/app/stores/user_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -33,6 +34,7 @@ class AppModule extends Module {
     Bind((i) => ContatoStore(i.get())),
     Bind((i) => ProdutoStore(i.get())),
     Bind((i) => LancamentoStore(i.get())),
+    Bind((i) => PedidoStore(i.get())),
     Bind((i) => UserStore()),
   ];
 

@@ -86,7 +86,7 @@ extension StatusExtension on STATUS {
   String get value {
     switch (this) {
       case STATUS.EM_ABERTO:
-        return 'EM_ABERTO';
+        return 'EM ABERTO';
       case STATUS.PREPARADO:
         return 'PREPARADO';
       case STATUS.ENVIADO:
@@ -96,7 +96,7 @@ extension StatusExtension on STATUS {
       case STATUS.CANCELADO:
         return 'CANCELADO';
       default:
-        return 'EM_ABERTO';
+        return 'EM ABERTO';
     }
   }
 

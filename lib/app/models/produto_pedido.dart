@@ -34,4 +34,9 @@ class ProdutoPedido {
   }
 
   String toJson() => json.encode(toMap());
+
+  @override
+  String toString() {
+    return '${produto.descricao} (${produto.unidade}) x $quantidade';
+  }
 }
